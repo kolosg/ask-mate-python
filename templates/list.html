@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>listáááák</h1>
+    {% for dict in questions %}
+        <p><a href="question/{{ dict['id'] }}">{{ dict['title'] }} <br> {{ dict['message'] }}</a></p>
+    {% endfor %}
+</body>
+</html>

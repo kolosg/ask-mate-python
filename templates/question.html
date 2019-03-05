@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>questionnnnn</h1>
+    <table>
+        <thead>
+            <tr>
+                {% for item in fields %}
+                <td><th>{{ item }}</th></td>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for dict in questions %}
+                    {% if dict['id'] == question_id %}
+                <tr>
+                        {% for key, value in dict.items() %}
+                            <td><td>{{ value }}<br></td></td>
+                        {% endfor %}
+            </tr>
+                    {% endif %}
+                {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
