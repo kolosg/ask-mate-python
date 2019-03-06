@@ -6,8 +6,8 @@
 </head>
 <body>
     <h1>listáááák</h1>
-    {% for dict in questions %}
-        <p><a href="question/{{ dict['id'] }}">{{ dict['title'] }} <br> {{ dict['message'] }}</a></p>
+    {% for question in questions_list %}
+        <p><a href="question/{{ question['id'] }}">{{ question['title'] }} <br> {{ question['message'] }}</a></p>
     {% endfor %}
 </body>
 </html>

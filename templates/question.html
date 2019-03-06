@@ -5,24 +5,50 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>questionnnnn</h1>
-    <table>
+    <h1>Question:</h1>
+    <table cellspacing="2px" border="1" >
         <thead>
             <tr>
-                {% for item in fields %}
-                <td><th>{{ item }}</th></td>
+                {% for item in q_fields %}
+                <th>{{ item }}</th>
                 {% endfor %}
             </tr>
         </thead>
         <tbody>
             <tr>
                 {% for dict in questions %}
-                    {% if dict['id'] == question_id %}
+                    {% if dict['id'] == quest_id %}
                 <tr>
                         {% for key, value in dict.items() %}
-                            <td><td>{{ value }}<br></td></td>
+                            {% if key != 'id'%}
+                            <td>{{ value }}</td>
+                            {% endif %}
                         {% endfor %}
+                </tr>
+                    {% endif %}
+                {% endfor %}
+        </tbody>
+    </table>
+    <h1>Answers:</h1>
+    <table cellspacing="2px" border="1">
+        <thead>
+            <tr>
+                {% for item in a_fields %}
+                <th>{{ item }}</th>
+                {% endfor %}
             </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for answer in answers %}
+                    {% if answer['question_id'] == quest_id %}
+                <tr>
+                        {% for key, value in answer.items() %}
+                            {% if key != 'id' and key != 'question_id' and key != 'image'%}
+                                <td>{{ value }}</td>
+                            {% endif %}
+                        {% endfor %}
+                </tr>
                     {% endif %}
                 {% endfor %}
         </tbody>
