@@ -1,6 +1,8 @@
 import connection
 from datetime import datetime
+import util
 
+FIELDS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 def sort_data_by_value(value):
     list_of_questions = []
@@ -21,3 +23,10 @@ def convert_unix_time_to_date(name):
         data['submission_time'] = datetime.utcfromtimestamp(data['submission_time']).strftime('%Y-%m-%d %H:%M:%S')
 
     return data_list
+
+
+def add_question(title, message):
+    ID = util.generate_id()
+    DATE = util.add_submission_time()
+
+    connection.append_question_to_csv('templates/question.csv', FIELDS, ID, DATE, title, message)

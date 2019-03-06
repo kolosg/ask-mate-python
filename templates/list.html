@@ -9,5 +9,8 @@
     {% for question in questions_list %}
         <p><a href="question/{{ question['id'] }}">{{ question['title'] }} <br> {{ question['message'] }}</a></p>
     {% endfor %}
+    <form action="/add-question">
+    <p><button type="submit"> Ask a Question </button></p>
+    </form>
 </body>
 </html>
