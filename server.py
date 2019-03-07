@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from data_manager import sort_data_by_value, convert_unix_time_to_date, add_question, add_answer
+from data_manager import sort_data_by_value, convert_unix_time_to_date, add_question, add_answer, edit_question
 from util import define_table_headers, get_latest_question_id
 
 
@@ -49,7 +49,10 @@ def route_edit_question(quest_id=None):
     if request.method == 'GET':
         update = True
         questions_list = sort_data_by_value('submission_time', 'question')
-        return render_template('add-question.html', quest_id=quest_id, questions_list=questions_list, update=update)
+    else:
+        edit_question(request.form['title'], request.form['message'], quest_id)
+        return redirect('/question/'+quest_id)
+    return render_template('add-question.html', quest_id=quest_id, questions_list=questions_list, update=update)
 
 
 
