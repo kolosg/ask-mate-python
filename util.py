@@ -7,9 +7,9 @@ def define_table_headers():
 
     return table_headers
 
-def generate_id():
+def generate_id(filename):
     q_list = []
-    connection.read_data_from_csv('templates/question.csv', q_list)
+    connection.read_data_from_csv(filename, q_list)
 
     return int(q_list[-1]['id']) + 1
 

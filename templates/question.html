@@ -25,10 +25,16 @@
                             {% endif %}
                         {% endfor %}
                 </tr>
-                    {% endif %}
-                {% endfor %}
+
         </tbody>
     </table>
+    <p>
+    <form action="/question/{{ dict['id'] }}/new-answer">
+            <button type="submit">Add new answer</button>
+        </form>
+    </p>
+                   {% endif %}
+            {% endfor %}
     <h1>Answers:</h1>
     <table cellspacing="2px" border="1">
         <thead>

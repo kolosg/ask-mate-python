@@ -16,8 +16,14 @@ def write_data_to_csv(filename, fields):
         writer.writerow()
 
 
-def append_question_to_csv(filename, fields, new_id, current_date, title, message):
-    with open(filename, "a") as file:
-        writer = csv.DictWriter(file, fieldnames=fields)
-        writer.writerow({'id': new_id, 'submission_time': current_date, 'view_number': 1, 'vote_number': 0,
-                         'title': title, 'message': message, 'image': ""})
+def append_data_to_csv(filename, fields, new_id, current_date, title_or_question_id, message):
+    if filename == "templates/question.csv":
+        with open(filename, "a") as file:
+            writer = csv.DictWriter(file, fieldnames=fields)
+            writer.writerow({'id': new_id, 'submission_time': current_date, 'view_number': 1, 'vote_number': 0,
+                             'title': title_or_question_id, 'message': message, 'image': ""})
+    else:
+        with open(filename, "a") as file:
+            writer = csv.DictWriter(file, fieldnames=fields)
+            writer.writerow({'id': new_id, 'submission_time': current_date, 'vote_number': 0,
+                             'question_id': title_or_question_id, 'message': message, 'image': ""})
