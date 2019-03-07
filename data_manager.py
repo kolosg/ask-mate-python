@@ -68,4 +68,13 @@ def delete_question(quest_id):
     connection.write_data_to_csv("templates/answer.csv", ANSWER_FIELDS, answer_data)
 
 
+def delete_answer(answer_id):
+    answer_data = []
+    connection.read_data_from_csv("templates/answer.csv", answer_data)
+    for answer in answer_data:
+        if answer_id == answer['id']:
+            question_id = answer['question_id']
+            answer_data.remove(answer)
+    connection.write_data_to_csv("templates/answer.csv", ANSWER_FIELDS, answer_data)
+    return question_id
 

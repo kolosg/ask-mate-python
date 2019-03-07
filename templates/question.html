@@ -60,6 +60,11 @@
         <td>{{ value }}</td>
         {% endif %}
         {% endfor %}
+        <td>
+            <form action="/answer/{{ answer['id'] }}/delete" method="post">
+                <button type="submit" style="margin:10px;">Delete</button>
+            </form>
+        </td>
     </tr>
     {% endif %}
     {% endfor %}
