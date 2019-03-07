@@ -5,10 +5,12 @@
     <title>Add an Answer</title>
 </head>
 <body>
-    <form action="/question/{{ quest_id }}/new-answer" method="post">
-            <label for="message-input">Message:</label>
-            <p><textarea id="message-input" name="message" rows="10" cols="100" required></textarea></p>
-            <p><button type="submit">Submit</button></p>
-        </form>
+<form action="/question/{{ quest_id }}/new-answer" method="post">
+    <label for="message-input">Message:</label>
+    <p><textarea id="message-input" name="message" rows="10" cols="100" required></textarea></p>
+    <p>
+        <button type="submit">Submit</button>
+    </p>
+</form>
 </body>
 </html>

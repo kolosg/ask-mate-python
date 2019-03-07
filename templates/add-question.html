@@ -6,25 +6,31 @@
 </head>
 <body>
 {% if update %}
-    {% for question in questions_list %}
-        {% if question['id'] == quest_id %}
-    <form action='/question/{{ quest_id }}/edit' method="post">
-            <label for="title-input">Title:</label>
-            <p><input type="text" id ="title-input" name="title" value="{{ question['title'] }}" required minlength="5" size="40"></p>
-            <label for="message-input">Message:</label>
-            <p><textarea id="message-input" name="message" rows="10" cols="100" required>{{ question['message'] }}</textarea></p>
-            <p><button type="submit">Submit</button></p>
-        </form>
-        {% endif %}
-    {% endfor %}
+{% for question in questions_list %}
+{% if question['id'] == quest_id %}
+<form action='/question/{{ quest_id }}/edit' method="post">
+    <label for="title-input">Title:</label>
+    <p><input type="text" id="title-input" name="title" value="{{ question['title'] }}" required minlength="5"
+              size="40"></p>
+    <label for="message-input">Message:</label>
+    <p><textarea id="message-input" name="message" rows="10" cols="100" required>{{ question['message'] }}</textarea>
+    </p>
+    <p>
+        <button type="submit">Submit</button>
+    </p>
+</form>
+{% endif %}
+{% endfor %}
 {% else %}
-    <form action="/add-question" method="post">
-            <label for="title-input">Title:</label>
-            <p><input type="text" id ="title-input" name="title" required minlength="5" size="40"></p>
-            <label for="message-input">Message:</label>
-            <p><textarea id="message-input" name="message" rows="10" cols="100" required></textarea></p>
-            <p><button type="submit">Submit</button></p>
-        </form>
+<form action="/add-question" method="post">
+    <label for="title-input">Title:</label>
+    <p><input type="text" id="title-input" name="title" required minlength="5" size="40"></p>
+    <label for="message-input">Message:</label>
+    <p><textarea id="message-input" name="message" rows="10" cols="100" required></textarea></p>
+    <p>
+        <button type="submit">Submit</button>
+    </p>
+</form>
 {% endif %}
 </body>
 </html>

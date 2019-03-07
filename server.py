@@ -23,7 +23,8 @@ def route_question(quest_id=None):
     sort_data_by_value('submission_time', 'answer')
     answers = convert_unix_time_to_date('answer')
     table_headers = define_table_headers()
-    return render_template('question.html', q_fields=table_headers[0], a_fields=table_headers[1], questions=questions, answers=answers, quest_id=quest_id)
+    return render_template('question.html', q_fields=table_headers[0], a_fields=table_headers[1],
+                           questions=questions, answers=answers, quest_id=quest_id)
 
 
 @app.route('/question/<quest_id>/new-answer', methods=["GET", "POST"])

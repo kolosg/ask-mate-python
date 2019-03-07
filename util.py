@@ -12,8 +12,12 @@ def define_table_headers():
 def generate_id(filename):
     data_list = []
     connection.read_data_from_csv(filename, data_list)
+    counter = 0
+    for data in data_list:
+        if int(data['id']) > counter:
+            counter = int(data['id'])
 
-    return int(data_list[-1]['id']) + 1
+    return int(counter) + 1
 
 
 def add_submission_time():

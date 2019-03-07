@@ -44,9 +44,11 @@ def add_answer(title_or_question_id, message):
 def edit_question(title, message, quest_id):
     questions = []
     connection.read_data_from_csv("templates/question.csv", questions)
+    DATE = util.add_submission_time()
     for question in questions:
         if quest_id == question['id']:
             question['title'] = title
             question['message'] = message
+            question['submission_time'] = DATE
     connection.write_data_to_csv("templates/question.csv", QUESTION_FIELDS, questions)
 

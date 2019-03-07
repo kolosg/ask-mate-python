@@ -5,65 +5,65 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Question:</h1>
-    <table cellspacing="2px" border="1" >
-        <thead>
-            <tr>
-                {% for item in q_fields %}
-                <th>{{ item }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for dict in questions %}
-                    {% if dict['id'] == quest_id %}
-                <tr>
-                        {% for key, value in dict.items() %}
-                            {% if key != 'id'%}
-                            <td>{{ value }}</td>
-                            {% endif %}
-                        {% endfor %}
-                </tr>
+<h1>Question:</h1>
+<table cellspacing="2px" border="1">
+    <thead>
+    <tr>
+        {% for item in q_fields %}
+        <th>{{ item }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for dict in questions %}
+        {% if dict['id'] == quest_id %}
+    <tr>
+        {% for key, value in dict.items() %}
+        {% if key != 'id'%}
+        <td>{{ value }}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
 
-        </tbody>
-    </table>
-    <form action="/question/{{ dict['id'] }}/new-answer"><span style="float:left;">
+    </tbody>
+</table>
+<form action="/question/{{ dict['id'] }}/new-answer"><span style="float:left;">
         <button type="submit" style="margin: 10px;">Add new answer</button></span>
-    </form>
+</form>
 
-    <form action="/question/{{ dict['id'] }}/edit"><span style="float:left;">
+<form action="/question/{{ dict['id'] }}/edit"><span style="float:left;">
         <button type="submit" style="margin:10px;">Edit Question</button></span>
-    </form>
-    <form action="/question/{{ dict['id'] }}/"><span style="float:left;">
+</form>
+<form action="/question/{{ dict['id'] }}/"><span style="float:left;">
         <button type="submit" style="margin:10px;">Delete Question</button></span>
-    </form>
-                   {% endif %}
-            {% endfor %}
-    <br>
-    <h1><p>Answers:</p></h1>
-    <table cellspacing="2px" border="1">
-        <thead>
-            <tr>
-                {% for item in a_fields %}
-                <th>{{ item }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for answer in answers %}
-                    {% if answer['question_id'] == quest_id %}
-                <tr>
-                        {% for key, value in answer.items() %}
-                            {% if key != 'id' and key != 'question_id' and key != 'image'%}
-                                <td>{{ value }}</td>
-                            {% endif %}
-                        {% endfor %}
-                </tr>
-                    {% endif %}
-                {% endfor %}
-        </tbody>
-    </table>
+</form>
+{% endif %}
+{% endfor %}
+<br>
+<h1><p>Answers:</p></h1>
+<table cellspacing="2px" border="1">
+    <thead>
+    <tr>
+        {% for item in a_fields %}
+        <th>{{ item }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for answer in answers %}
+        {% if answer['question_id'] == quest_id %}
+    <tr>
+        {% for key, value in answer.items() %}
+        {% if key != 'id' and key != 'question_id' and key != 'image'%}
+        <td>{{ value }}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>
