@@ -52,3 +52,20 @@ def edit_question(title, message, quest_id):
             question['submission_time'] = DATE
     connection.write_data_to_csv("templates/question.csv", QUESTION_FIELDS, questions)
 
+
+def delete_question(quest_id):
+    question_data = []
+    answer_data = []
+    connection.read_data_from_csv("templates/question.csv", question_data)
+    connection.read_data_from_csv("templates/answer.csv", answer_data)
+    for question in question_data:
+        if quest_id == question['id']:
+            question_data.remove(question)
+    for answer in answer_data[::-1]:
+        if quest_id == answer['question_id']:
+            answer_data.remove(answer)
+    connection.write_data_to_csv("templates/question.csv", QUESTION_FIELDS, question_data)
+    connection.write_data_to_csv("templates/answer.csv", ANSWER_FIELDS, answer_data)
+
+
+

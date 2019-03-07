@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from data_manager import sort_data_by_value, convert_unix_time_to_date, add_question, add_answer, edit_question
+from data_manager import sort_data_by_value, convert_unix_time_to_date, add_question, add_answer, edit_question, delete_question
 from util import define_table_headers, get_latest_question_id
 
 
@@ -55,6 +55,11 @@ def route_edit_question(quest_id=None):
         return redirect('/question/'+quest_id)
     return render_template('add-question.html', quest_id=quest_id, questions_list=questions_list, update=update)
 
+
+@app.route('/question/<quest_id>/delete', methods=['POST'])
+def route_delete_question(quest_id=None):
+    delete_question(quest_id)
+    return redirect('/list')
 
 
 if __name__ == "__main__":

@@ -35,7 +35,7 @@
 <form action="/question/{{ dict['id'] }}/edit"><span style="float:left;">
         <button type="submit" style="margin:10px;">Edit Question</button></span>
 </form>
-<form action="/question/{{ dict['id'] }}/"><span style="float:left;">
+<form action="/question/{{ dict['id'] }}/delete" method="post"><span style="float:left;">
         <button type="submit" style="margin:10px;">Delete Question</button></span>
 </form>
 {% endif %}
