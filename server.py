@@ -13,13 +13,14 @@ def route_index():
 
 @app.route('/list')
 def route_list():
-    questions_list = sort_data_by_value('submission_time')
+    questions_list = sort_data_by_value('submission_time', 'question')
     return render_template('list.html', questions_list=questions_list)
 
 
 @app.route('/question/<quest_id>')
 def route_question(quest_id=None):
     questions = convert_unix_time_to_date('question')
+    sort_data_by_value('submission_time', 'answer')
     answers = convert_unix_time_to_date('answer')
     table_headers = define_table_headers()
     return render_template('question.html', q_fields=table_headers[0], a_fields=table_headers[1], questions=questions, answers=answers, quest_id=quest_id)
@@ -41,6 +42,15 @@ def route_ask_question(quest_id=None):
         add_question(request.form['title'], request.form['message'])
         return redirect('/question/' + get_latest_question_id())
     return render_template('add-question.html', quest_id=quest_id)
+
+
+@app.route('/question/<quest_id>/edit', methods=['GET', 'POST'])
+def route_edit_question(quest_id=None):
+    if request.method == 'GET':
+        update = True
+        questions_list = sort_data_by_value('submission_time', 'question')
+        return render_template('add-question.html', quest_id=quest_id, questions_list=questions_list, update=update)
+
 
 
 if __name__ == "__main__":

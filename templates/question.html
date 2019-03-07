@@ -28,14 +28,20 @@
 
         </tbody>
     </table>
-    <p>
-    <form action="/question/{{ dict['id'] }}/new-answer">
-            <button type="submit">Add new answer</button>
-        </form>
-    </p>
+    <form action="/question/{{ dict['id'] }}/new-answer"><span style="float:left;">
+        <button type="submit" style="margin: 10px;">Add new answer</button></span>
+    </form>
+
+    <form action="/question/{{ dict['id'] }}/edit"><span style="float:left;">
+        <button type="submit" style="margin:10px;">Edit Question</button></span>
+    </form>
+    <form action="/question/{{ dict['id'] }}/"><span style="float:left;">
+        <button type="submit" style="margin:10px;">Delete Question</button></span>
+    </form>
                    {% endif %}
             {% endfor %}
-    <h1>Answers:</h1>
+    <br>
+    <h1><p>Answers:</p></h1>
     <table cellspacing="2px" border="1">
         <thead>
             <tr>
