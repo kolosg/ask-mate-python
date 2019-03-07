@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request
 from data_manager import sort_data_by_value, convert_unix_time_to_date, add_question, add_answer
-from util import define_table_headers
+from util import define_table_headers, get_latest_question_id
 
 
 app = Flask(__name__)
@@ -36,11 +36,11 @@ def post_answer(quest_id=None):
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
-def route_ask_question():
+def route_ask_question(quest_id=None):
     if request.method == 'POST':
         add_question(request.form['title'], request.form['message'])
-        return redirect('/list')
-    return render_template('add-question.html')
+        return redirect('/question/' + get_latest_question_id())
+    return render_template('add-question.html', quest_id=quest_id)
 
 
 if __name__ == "__main__":

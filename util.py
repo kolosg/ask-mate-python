@@ -13,5 +13,13 @@ def generate_id(filename):
 
     return int(q_list[-1]['id']) + 1
 
+
 def add_submission_time():
     return int(time.time())
+
+
+def get_latest_question_id():
+    questions = []
+    connection.read_data_from_csv("templates/question.csv", questions)
+
+    return questions[-1]["id"]
