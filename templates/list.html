@@ -5,13 +5,17 @@
     <title>Title</title>
 </head>
 <body>
-<h1>listáááák</h1>
+<h1>Most recent questions: </h1><br>
+<hr>
 {% for question in questions_list %}
-<p><a href="question/{{ question['id'] }}">{{ question['title'] }} <br> {{ question['message'] }}</a></p>
+<p>
+    <a href="question/{{ question['id'] }}">{{ question['title'] }} <br> {{ question['message'] }}</a></p>
+<hr>
 {% endfor %}
+<br>
 <form action="/add-question">
     <p>
-        <button type="submit"> Ask a Question</button>
+        <button type="submit" style="width:200px; height:30px"><strong>Ask a Question</strong></button>
     </p>
 </form>
 </body>

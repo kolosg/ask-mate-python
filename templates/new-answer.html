@@ -5,11 +5,36 @@
     <title>Add an Answer</title>
 </head>
 <body>
+<h1>The question you're answering to: </h1>
+<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <thead>
+    <tr>
+        {% for item in q_fields %}
+        <th>{{ item }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>s
+    <tr>
+        {% for question in questions %}
+        {% if question['id'] == quest_id %}
+    <tr>
+        {% for key, value in question.items() %}
+        {% if key != 'id' and key!= 'image'%}
+        <td align="center">{{ value }}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
+<br>
 <form action="/question/{{ quest_id }}/new-answer" method="post">
-    <label for="message-input">Message:</label>
+    <label for="message-input"><h2>Your answer:</h2></label>
     <p><textarea id="message-input" name="message" rows="10" cols="100" required></textarea></p>
     <p>
-        <button type="submit">Submit</button>
+        <button type="submit" style=" width:200px; height:30px"><strong>Submit</strong></button>
     </p>
 </form>
 </body>

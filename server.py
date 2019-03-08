@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request
 from data_manager import sort_data_by_value, convert_unix_time_to_date, add_question, add_answer, edit_question, \
-    delete_question, delete_answer
+    delete_question, delete_answer, count_answers, increase_view_number
 from util import define_table_headers, get_latest_question_id
 
 app = Flask(__name__)
@@ -19,22 +19,26 @@ def route_list():
 
 @app.route('/question/<quest_id>')
 def route_question(quest_id=None):
+    increase_view_number(quest_id)
     questions = convert_unix_time_to_date('question')
     sort_data_by_value('submission_time', 'answer')
     answers = convert_unix_time_to_date('answer')
     table_headers = define_table_headers()
+    any_answer = count_answers(quest_id)
     return render_template('question.html', q_fields=table_headers[0], a_fields=table_headers[1],
-                           questions=questions, answers=answers, quest_id=quest_id)
+                           questions=questions, answers=answers, quest_id=quest_id, any_answer=any_answer)
 
 
 @app.route('/question/<quest_id>/new-answer', methods=["GET", "POST"])
 def post_answer(quest_id=None):
+    questions = convert_unix_time_to_date('question')
+    table_headers = define_table_headers()
     if request.method == "POST":
         add_answer(quest_id, request.form["message"])
 
         return redirect("/question/" + quest_id)
 
-    return render_template("new-answer.html", quest_id=quest_id)
+    return render_template("new-answer.html", quest_id=quest_id, questions=questions, q_fields=table_headers[0])
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -65,7 +69,7 @@ def route_delete_question(quest_id=None):
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
 def route_delete_answer(answer_id=None):
     question_id = delete_answer(answer_id)
-    return redirect('question/'+ question_id)
+    return redirect('question/' + question_id)
 
 
 if __name__ == "__main__":

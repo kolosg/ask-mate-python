@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Question:</h1>
-<table cellspacing="2px" border="1">
+<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
         {% for item in q_fields %}
@@ -16,33 +16,39 @@
     </thead>
     <tbody>
     <tr>
-        {% for dict in questions %}
-        {% if dict['id'] == quest_id %}
+        {% for question in questions %}
+        {% if question['id'] == quest_id %}
     <tr>
-        {% for key, value in dict.items() %}
-        {% if key != 'id'%}
-        <td>{{ value }}</td>
+        {% for key, value in question.items() %}
+        {% if key != 'id' and key != 'image'%}
+        <td align="center">{{ value }}</td>
         {% endif %}
         {% endfor %}
     </tr>
 
     </tbody>
 </table>
-<form action="/question/{{ dict['id'] }}/new-answer"><span style="float:left;">
-        <button type="submit" style="margin: 10px;">Add new answer</button></span>
+<br>
+<form action="/question/{{ question['id'] }}/new-answer"><span style="float:left;">
+        <button type="submit"
+                style="margin: 10px; width:130px; height:25px"><strong>Add new answer</strong></button></span>
 </form>
 
-<form action="/question/{{ dict['id'] }}/edit"><span style="float:left;">
-        <button type="submit" style="margin:10px;">Edit Question</button></span>
+<form action="/question/{{ question['id'] }}/edit"><span style="float:left;">
+        <button type="submit"
+                style="margin:10px; width:130px; height:25px"><strong>Edit Question</strong></button></span>
 </form>
-<form action="/question/{{ dict['id'] }}/delete" method="post"><span style="float:left;">
-        <button type="submit" style="margin:10px;">Delete Question</button></span>
+<form action="/question/{{ question['id'] }}/delete" method="post"><span style="float:left;">
+        <button type="submit"
+                style="margin:10px; width:130px; height:25px"><strong>Delete Question</strong></button></span>
 </form>
 {% endif %}
 {% endfor %}
 <br>
+{% if any_answer %}
+<br>
 <h1><p>Answers:</p></h1>
-<table cellspacing="2px" border="1">
+<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
         {% for item in a_fields %}
@@ -57,12 +63,12 @@
     <tr>
         {% for key, value in answer.items() %}
         {% if key != 'id' and key != 'question_id' and key != 'image'%}
-        <td>{{ value }}</td>
+        <td align="center">{{ value }}</td>
         {% endif %}
         {% endfor %}
         <td>
-            <form action="/answer/{{ answer['id'] }}/delete" method="post">
-                <button type="submit" style="margin:10px;">Delete</button>
+            <form action="/answer/{{ answer['id'] }}/delete" align="center" method="post">
+                <button type="submit" style="width:80px; height:25px"><strong>Delete</strong></button>
             </form>
         </td>
     </tr>
@@ -70,5 +76,10 @@
     {% endfor %}
     </tbody>
 </table>
+{% else %}
+<br>
+<h1>Answers: </h1>
+<h2>There are no answers to this question yet</h2>
+{% endif %}
 </body>
 </html>

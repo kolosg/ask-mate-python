@@ -21,7 +21,7 @@ def sort_data_by_value(value, name):
 
 def convert_unix_time_to_date(name):
     data_list = []
-    connection.read_data_from_csv('templates/'+name+'.csv', data_list)
+    connection.read_data_from_csv('templates/'+ name +'.csv', data_list)
     for data in data_list:
         data['submission_time'] = int(data['submission_time'])
         data['submission_time'] = datetime.utcfromtimestamp(data['submission_time']).strftime('%Y-%m-%d %H:%M:%S')
@@ -78,3 +78,18 @@ def delete_answer(answer_id):
     connection.write_data_to_csv("templates/answer.csv", ANSWER_FIELDS, answer_data)
     return question_id
 
+
+def count_answers(quest_id):
+    answer_data = []
+    connection.read_data_from_csv("templates/answer.csv", answer_data)
+    return any(answer['question_id'] == quest_id for answer in answer_data)
+
+
+def increase_view_number(quest_id):
+    questions = []
+    connection.read_data_from_csv("templates/question.csv", questions)
+    for question in questions:
+        if quest_id == question['id']:
+            question['view_number'] = int(question['view_number'])
+            question['view_number'] += 1
+    connection.write_data_to_csv("templates/question.csv", QUESTION_FIELDS, questions)
