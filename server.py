@@ -25,6 +25,17 @@ def route_question(quest_id=None):
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0], all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer)
 
 
+@app.route('/add-question', methods=['GET', 'POST'])
+def route_ask_question(quest_id=None):
+    if request.method == 'POST':
+
+        data_manager.ask_new_question(request.form['title'], request.form['message'])
+        return redirect('/')
+
+
+    return render_template('add-question.html', quest_id=quest_id)
+
+
 '''
 @app.route('/question/<quest_id>')
 def route_question(quest_id=None):
@@ -48,14 +59,6 @@ def post_answer(quest_id=None):
         return redirect("/question/" + quest_id)
 
     return render_template("new-answer.html", quest_id=quest_id, questions=questions, q_fields=table_headers[0])
-
-
-@app.route('/add-question', methods=['GET', 'POST'])
-def route_ask_question(quest_id=None):
-    if request.method == 'POST':
-        data_manager.add_question(request.form['title'], request.form['message'])
-        return redirect('/question/' + get_latest_question_id())
-    return render_template('add-question.html', quest_id=quest_id)
 
 
 @app.route('/question/<quest_id>/edit', methods=['GET', 'POST'])

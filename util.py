@@ -1,6 +1,6 @@
 import connection
 import time
-
+import database_connection
 
 def define_table_headers():
     table_headers = [['Submission Time', 'View number', 'Vote number', 'Title', 'Message'],
@@ -9,15 +9,16 @@ def define_table_headers():
     return table_headers
 
 
-def generate_id(filename):
-    data_list = []
-    connection.read_data_from_csv(filename, data_list)
-    counter = 0
-    for data in data_list:
-        if int(data['id']) > counter:
-            counter = int(data['id'])
+@database_connection.connection_handler
+def generate_id(cursor):
+    cursor.execute("""
+                    SELECT id FROM question
+                    ORDER BY id DESC 
+                    LIMIT 1 
+                    """)
+    id = cursor.fetchall()
 
-    return int(counter) + 1
+    return id
 
 
 def add_submission_time():
