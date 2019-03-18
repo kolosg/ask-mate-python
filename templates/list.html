@@ -7,10 +7,10 @@
 <body>
 <h1>Most recent questions: </h1><br>
 <hr>
-{% for question in questions_list %}
-<p>
-    <a href="question/{{ question['id'] }}">{{ question['title'] }} <br> {{ question['message'] }}</a></p>
-<hr>
+{% for question in all_question %}
+    <p>
+        <a href="question/{{ question.id }}">{{ question.title }} <br> {{ question.message }}</a></p>
+    <hr>
 {% endfor %}
 <br>
 <form action="/add-question">
