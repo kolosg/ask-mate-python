@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 from util import define_table_headers
 
@@ -70,12 +70,22 @@ def post_answer(quest_id=None):
     return render_template("new-answer.html", quest_id=int(quest_id), questions=questions, q_fields=table_headers[0])
 
 
-
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
 def route_delete_answer(answer_id=None):
     quest_id = data_manager.get_question_id_to_delete(int(answer_id))
     data_manager.delete_answer(int(answer_id))
-    return redirect('/question/' + str(quest_id['question_id']))
+    return redirect(url_for('route_question', quest_id=quest_id["question_id"]))
+
+
+@app.route("/question/<quest_id>/new-comment", methods=["GET", "POST"])
+def add_comment_to_question(quest_id=None):
+    if request.method == 'GET':
+        comment = True
+    else:
+        data_manager.post_comment_to_question(quest_id, request.form['message'])
+        return redirect(url_for('route_question', quest_id=int(quest_id)))
+    return render_template('add-question.html', quest_id=int(quest_id), comment=comment)
+
 
 
 if __name__ == "__main__":

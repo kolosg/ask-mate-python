@@ -114,3 +114,12 @@ def list_latest_questions(cursor):
                     """)
     latest_questions = cursor.fetchall()
     return latest_questions
+
+
+@database_connection.connection_handler
+def post_comment_to_question(cursor, quest_id, message):
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+                    INSERT INTO comment(question_id, message, submission_time)
+                    VALUES(%(quest_id)s, %(message)s, %(dt)s)
+                    """, dict(quest_id=quest_id, message=message, dt=dt))
