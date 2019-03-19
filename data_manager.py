@@ -71,3 +71,19 @@ def post_answer(cursor, quest_id, message):
                     INSERT INTO answer(submission_time, vote_number, question_id, message)
                     VALUES(%(dt)s, 0, %(quest_id)s, %(message)s)
                     """, dict(dt=dt, quest_id=quest_id, message=message))
+
+@database_connection.connection_handler
+def delete_answer(cursor, answer_id):
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE id = %(answer_id)s
+                    """, dict(answer_id=answer_id))
+
+
+@database_connection.connection_handler
+def get_question_id_to_delete(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question_id FROM answer
+                    where id = %(answer_id)s
+                    """, dict(answer_id=answer_id))
+    return cursor.fetchone()

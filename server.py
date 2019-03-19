@@ -65,11 +65,12 @@ def post_answer(quest_id=None):
     return render_template("new-answer.html", quest_id=int(quest_id), questions=questions, q_fields=table_headers[0])
 
 
-'''
+
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
 def route_delete_answer(answer_id=None):
-    question_id = data_manager.delete_answer(answer_id)
-    return redirect('question/' + question_id)'''
+    quest_id = data_manager.get_question_id_to_delete(int(answer_id))
+    data_manager.delete_answer(int(answer_id))
+    return redirect('/question/' + str(quest_id['question_id']))
 
 
 if __name__ == "__main__":
