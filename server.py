@@ -1,19 +1,22 @@
 from flask import Flask, render_template, redirect, request
 import data_manager
-from util import define_table_headers, get_latest_question_id
+from util import define_table_headers
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def route_index():
-    return redirect('/list')
+    latest_questions = data_manager.list_latest_questions()
+    table_headers = define_table_headers()
+    return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0])
 
 
 @app.route('/list')
 def route_list():
     all_question = data_manager.list_all_question()
-    return render_template('list.html', all_question=all_question)
+    table_headers = define_table_headers()
+    return render_template('list.html', all_question=all_question, question_headers=table_headers[0])
 
 
 @app.route('/question/<quest_id>')

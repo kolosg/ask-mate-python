@@ -104,3 +104,13 @@ def increase_view_number(cursor, quest_id):
                     WHERE id = %(quest_id)s
                     """, dict(quest_id=quest_id))
 
+
+@database_connection.connection_handler
+def list_latest_questions(cursor):
+    cursor.execute("""
+                    SELECT * FROM Question
+                    ORDER BY submission_time DESC
+                    LIMIT 5
+                    """)
+    latest_questions = cursor.fetchall()
+    return latest_questions
