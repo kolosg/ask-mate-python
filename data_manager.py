@@ -32,7 +32,7 @@ def ask_new_question(cursor, title, message):
 
     cursor.execute("""
                     INSERT INTO question (submission_time, view_number, vote_number, title, message)
-                    VALUES (%(dt)s, 1, 0, %(add_title)s, %(add_message)s)
+                    VALUES (%(dt)s, 0, 0, %(add_title)s, %(add_message)s)
                     """, dict(dt=dt, add_title=title, add_message=message))
 
 
@@ -53,6 +53,13 @@ def delete_question(cursor, quest_id):
                     WHERE id = %(quest_id)s
                     """, dict(quest_id=quest_id))
 
+
+@database_connection.connection_handler
+def delete_all_answer_of_question(cursor, quest_id):
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE question_id = %(quest_id)s 
+                    """, dict(quest_id=quest_id))
 
 @database_connection.connection_handler
 def get_latest_id(cursor):
@@ -87,3 +94,13 @@ def get_question_id_to_delete(cursor, answer_id):
                     where id = %(answer_id)s
                     """, dict(answer_id=answer_id))
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def increase_view_number(cursor, quest_id):
+    cursor.execute("""
+                    UPDATE question
+                    SET view_number = view_number + 1
+                    WHERE id = %(quest_id)s
+                    """, dict(quest_id=quest_id))
+

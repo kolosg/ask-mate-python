@@ -18,6 +18,7 @@ def route_list():
 
 @app.route('/question/<quest_id>')
 def route_question(quest_id=None):
+    data_manager.increase_view_number(quest_id)
     all_answer = data_manager.list_answers()
     table_headers = define_table_headers()
     questions = data_manager.list_all_question()
@@ -49,6 +50,7 @@ def route_edit_question(quest_id=None):
 
 @app.route('/question/<quest_id>/delete', methods=['POST'])
 def route_delete_question(quest_id=None):
+    data_manager.delete_all_answer_of_question(quest_id)
     data_manager.delete_question(int(quest_id))
     return redirect('/list')
 
