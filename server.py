@@ -28,27 +28,31 @@ def route_question(quest_id=None):
 @app.route('/add-question', methods=['GET', 'POST'])
 def route_ask_question(quest_id=None):
     if request.method == 'POST':
-
         data_manager.ask_new_question(request.form['title'], request.form['message'])
-        return redirect('/')
+        return redirect('/question/' + str(data_manager.get_latest_id()['id']))
 
 
     return render_template('add-question.html', quest_id=quest_id)
 
 
+@app.route('/question/<quest_id>/edit', methods=['GET', 'POST'])
+def route_edit_question(quest_id=None):
+    if request.method == 'GET':
+        update = True
+        questions = data_manager.list_all_question()
+    else:
+        data_manager.update_question(request.form['title'], request.form['message'], int(quest_id))
+        return redirect('/question/' + quest_id)
+    return render_template('add-question.html', quest_id=int(quest_id), questions=questions, update=update)
+
+
+@app.route('/question/<quest_id>/delete', methods=['POST'])
+def route_delete_question(quest_id=None):
+    data_manager.delete_question(int(quest_id))
+    return redirect('/list')
+
+
 '''
-@app.route('/question/<quest_id>')
-def route_question(quest_id=None):
-    data_manager.increase_view_number(quest_id)
-    questions = data_manager.convert_unix_time_to_date('question')
-    data_manager.sort_data_by_value('submission_time', 'answer')
-    answers = data_manager.convert_unix_time_to_date('answer')
-    table_headers = define_table_headers()
-    any_answer = data_manager.count_answers(quest_id)
-    return render_template('question.html', q_fields=table_headers[0], a_fields=table_headers[1],
-                           questions=questions, answers=answers, quest_id=quest_id, any_answer=any_answer)
-
-
 @app.route('/question/<quest_id>/new-answer', methods=["GET", "POST"])
 def post_answer(quest_id=None):
     questions = data_manager.convert_unix_time_to_date('question')
@@ -59,23 +63,6 @@ def post_answer(quest_id=None):
         return redirect("/question/" + quest_id)
 
     return render_template("new-answer.html", quest_id=quest_id, questions=questions, q_fields=table_headers[0])
-
-
-@app.route('/question/<quest_id>/edit', methods=['GET', 'POST'])
-def route_edit_question(quest_id=None):
-    if request.method == 'GET':
-        update = True
-        questions_list = data_manager.sort_data_by_value('submission_time', 'question')
-    else:
-        data_manager.edit_question(request.form['title'], request.form['message'], quest_id)
-        return redirect('/question/' + quest_id)
-    return render_template('add-question.html', quest_id=quest_id, questions_list=questions_list, update=update)
-
-
-@app.route('/question/<quest_id>/delete', methods=['POST'])
-def route_delete_question(quest_id=None):
-    data_manager.delete_question(quest_id)
-    return redirect('/list')
 
 
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
