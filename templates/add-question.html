@@ -6,7 +6,7 @@
 </head>
 <body>
 {% if update %}
-    <h1>Your question:</h1>
+    <h1>Edit your question:</h1>
     {% for question in questions %}
     {% if question.id == quest_id %}
         <form action='/question/{{ quest_id }}/edit' method="post">
@@ -24,8 +24,9 @@
     {% endif %}
 {% endfor %}
 {% elif comment %}
+    <h1>Your comment:</h1>
     <form action='/question/{{ quest_id }}/new-comment' method="post">
-        <label for="message-input">My comment:</label>
+        <label for="message-input"></label>
         <p><textarea id="message-input" name="message" rows="10" cols="100"
                      required></textarea>
         </p>
@@ -34,6 +35,7 @@
         </p>
     </form>
 {% else %}
+    <h1>Your question:</h1>
     <form action="/add-question" method="post">
         <label for="title-input">Title:</label>
         <p><input type="text" id="title-input" name="title" required minlength="5" size="40"></p>

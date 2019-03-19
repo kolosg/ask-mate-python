@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 from util import define_table_headers
 
+
 app = Flask(__name__)
 
 
