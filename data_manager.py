@@ -14,7 +14,8 @@ def list_all_question(cursor):
 @database_connection.connection_handler
 def list_answers(cursor):
     cursor.execute("""
-                    SELECT * FROM answer; 
+                    SELECT * FROM answer
+                    ORDER BY submission_time DESC; 
     """)
     all_answer = cursor.fetchall()
     return all_answer
@@ -61,3 +62,12 @@ def get_latest_id(cursor):
                     LIMIT 1 
                     """)
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def post_answer(cursor, quest_id, message):
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+                    INSERT INTO answer(submission_time, vote_number, question_id, message)
+                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s)
+                    """, dict(dt=dt, quest_id=quest_id, message=message))

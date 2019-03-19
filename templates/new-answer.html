@@ -17,7 +17,7 @@
     <tbody>
     <tr>
         {% for question in questions %}
-        {% if question['id'] == quest_id %}
+        {% if question.id == quest_id %}
     <tr>
         {% for key, value in question.items() %}
         {% if key != 'id' and key!= 'image'%}

@@ -22,7 +22,8 @@ def route_question(quest_id=None):
     table_headers = define_table_headers()
     questions = data_manager.list_all_question()
     is_answer = data_manager.count_answers(quest_id)
-    return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0], all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer)
+    return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
+                           all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -52,19 +53,19 @@ def route_delete_question(quest_id=None):
     return redirect('/list')
 
 
-'''
 @app.route('/question/<quest_id>/new-answer', methods=["GET", "POST"])
 def post_answer(quest_id=None):
-    questions = data_manager.convert_unix_time_to_date('question')
+    questions = data_manager.list_all_question()
     table_headers = define_table_headers()
     if request.method == "POST":
-        data_manager.add_answer(quest_id, request.form["message"])
+        data_manager.post_answer(quest_id, request.form["message"])
 
         return redirect("/question/" + quest_id)
 
-    return render_template("new-answer.html", quest_id=quest_id, questions=questions, q_fields=table_headers[0])
+    return render_template("new-answer.html", quest_id=int(quest_id), questions=questions, q_fields=table_headers[0])
 
 
+'''
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
 def route_delete_answer(answer_id=None):
     question_id = data_manager.delete_answer(answer_id)
