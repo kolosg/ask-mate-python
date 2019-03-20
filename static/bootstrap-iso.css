@@ -1326,7 +1326,7 @@
   padding: 0.2em;
 }
 .bootstrap-iso .text-left {
-  text-align: left;
+  text-align: center;
 }
 .bootstrap-iso .text-right {
   text-align: right;
@@ -2355,7 +2355,7 @@
   text-align: left;
 }
 .bootstrap-iso th {
-  text-align: left;
+  text-align: center;
 }
 .bootstrap-iso .table {
   width: 100%;
@@ -2374,7 +2374,7 @@
   border-top: 1px solid #dddddd;
 }
 .bootstrap-iso .table > thead > tr > th {
-  vertical-align: bottom;
+  vertical-align: center;
   border-bottom: 2px solid #dddddd;
 }
 .bootstrap-iso .table > caption + thead > tr:first-child > th,

@@ -128,7 +128,16 @@ def post_comment_to_question(cursor, quest_id, message):
 @database_connection.connection_handler
 def select_comments(cursor):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT submission_time, message, question_id, id, answer_id FROM comment
                     """)
     comments = cursor.fetchall()
     return comments
+
+
+@database_connection.connection_handler
+def get_comment_ids(cursor):
+    cursor.execute("""
+                    SELECT id FROM comment
+                    """)
+    ids = cursor.fetchall()
+    return str(ids['id'])

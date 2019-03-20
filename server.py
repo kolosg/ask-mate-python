@@ -29,7 +29,8 @@ def route_question(quest_id=None):
     is_answer = data_manager.count_answers(quest_id)
     comments = data_manager.select_comments()
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
-                           all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments)
+                           all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments,
+                           comment_headers=table_headers[2])
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
