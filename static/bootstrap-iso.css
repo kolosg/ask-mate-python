@@ -202,7 +202,7 @@
 }
 .bootstrap-iso td,
 .bootstrap-iso th {
-  padding: 0;
+  padding: 7px;
 }
 @media print {
   .bootstrap-iso *,
