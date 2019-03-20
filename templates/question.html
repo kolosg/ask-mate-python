@@ -18,7 +18,7 @@
 <body>
 <h1>Question:</h1>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
-    <thead>
+    <thead id="question">
     <tr>
         {% for item in question_headers %}
             <th>{{ item }}</th>
@@ -52,7 +52,7 @@
                 style="margin:10px; width:130px; height:25px"><strong>Edit Question</strong></button></span>
                 </form>
                 <form action="/question/{{ question.id }}/delete" method="post"><span style="float:left;">
-        <button type="button"
+        <button type="submit"
                 style="margin:10px; width:130px; height:25px"><strong>Delete Question</strong></button></span>
                 </form>
                 <div class="bootstrap-iso">
@@ -60,54 +60,54 @@
                             data-target="#multiCollapseExamplequestion"
                             aria-expanded="false" aria-controls="multiCollapseExamplequestion"
                             style="margin:10px; width:130px; height:25px"><strong>
-                        Comments
+                        See Comments
                     </strong></button>
                     <div class="collapse" id="multiCollapseExamplequestion">
                         <div class="card card-body">
-                        {% if is_comment %}
-                            <h3>Comments for this question: </h3>
-                            <br>
-                            <table border="2" cellpadding="5" cellspacing="" width="800"
-                                   style="border-collapse:collapse;">
-                                <thead>
-                                <tr>
-                                    {% for item in comment_headers %}
-                                        <th>{{ item }}</th>
+                            {% if is_comment %}
+                                <h3>Comments for this question: </h3>
+                                <br>
+                                <table border="2" cellpadding="5" cellspacing="" width="800"
+                                       style="border-collapse:collapse;">
+                                    <thead>
+                                    <tr>
+                                        {% for item in comment_headers %}
+                                            <th>{{ item }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for comment in comments %}
+                                        {% if quest_id == comment.question_id %}
+                                            <tr>
+                                                {% for key, value in comment.items() %}
+                                                    {% if key == 'submission_time' or key == 'message' %}
+                                                        <td align="center">{{ value }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <td>
+                                                    <form action='/comments/{{ comment.id }}/edit' align="center"
+                                                          method="get">
+                                                        <button type="submit" style="width:80px; height:25px">
+                                                            <strong>Edit</strong>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <form action="/comments/{{ comment.id }}/delete" align="center"
+                                                          method="post">
+                                                        <button type="submit" style="width:80px; height:25px">
+                                                            <strong>Delete</strong>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for comment in comments %}
-                                    {% if quest_id == comment.question_id %}
-                                        <tr>
-                                            {% for key, value in comment.items() %}
-                                                {% if key == 'submission_time' or key == 'message' %}
-                                                    <td align="center">{{ value }}</td>
-                                                {% endif %}
-                                            {% endfor %}
-                                            <td>
-                                                <form action='/comments/{{ comment.id }}/edit' align="center"
-                                                      method="get">
-                                                    <button type="submit" style="width:80px; height:25px">
-                                                        <strong>Edit</strong>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form action="/comments/{{ comment.id }}/delete" align="center"
-                                                      method="post">
-                                                    <button type="submit" style="width:80px; height:25px">
-                                                        <strong>Delete</strong>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             {% else %}
-                            <h3>There are no comments to this question yet.</h3>
+                                <h3>There are no comments to this question yet.</h3>
                             {% endif %}
                         </div>
                     </div>
@@ -139,8 +139,24 @@
                                 {% endif %}
                             {% endfor %}
                             <td>
+                                <form action="majd edit" align="center"
+                                      method="post">
+                                    <button type="submit" style="width:80px; height:25px">
+                                        <strong>Edit</strong>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
                                 <form action="/answer/{{ answer.id }}/delete" align="center" method="post">
                                     <button type="submit" style="width:80px; height:25px"><strong>Delete</strong>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/answer/{{ answer.id }}/new-comment" align="center"
+                                      method="get">
+                                    <button type="submit" style="width:120px; height:25px">
+                                        <strong>Post Comment</strong>
                                     </button>
                                 </form>
                             </td>
@@ -150,7 +166,7 @@
                                             data-target="#multiCollapseExample{{ answer.id }}"
                                             aria-expanded="false" aria-controls="multiCollapseExample{{ answer.id }}"
                                             style="margin:10px; width:110px; height:25px"><strong>
-                                        Comments
+                                        See Comments
                                     </strong></button>
                                 </div>
                             </td>
@@ -182,7 +198,7 @@
     </table>
 {% else %}
     <h1>Answers: </h1>
-    <h2>There are no answers to this questions yet.</h2>
+    <h2>There are no answers to this question yet.</h2>
 {% endif %}
 <br><br>
 <form action="/">

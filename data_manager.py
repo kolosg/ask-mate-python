@@ -170,3 +170,21 @@ def delete_comment(cursor, comment_id):
                     """, dict(comment_id=comment_id))
 
 
+@database_connection.connection_handler
+def get_question_id_from_answers(cursor, answer_id):
+    cursor.execute("""
+                    select answer.id, answer.question_id, comment.answer_id
+                    from answer
+                    inner join comment ON comment.answer_id = answer_id
+                    WHERE answer.id = %(answer_id)s
+                    """, dict(answer_id=answer_id))
+    return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def post_comment_to_answer(cursor, answer_id, message):
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+                    INSERT INTO comment(answer_id, message, submission_time)
+                    VALUES(%(answer_id)s, %(message)s, %(dt)s)
+                    """, dict(answer_id=answer_id, message=message, dt=dt))

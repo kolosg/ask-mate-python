@@ -4,7 +4,7 @@ import database_connection
 
 def define_table_headers():
     table_headers = [['Submission Time', 'View number', 'Vote number', 'Title', 'Message'],
-                     ['Submission Time', 'Vote number', 'Message', 'Delete', 'Comments'],
+                     ['Submission Time', 'Vote number', 'Message','Edit', 'Delete', 'Post Comment', 'Existing Comments'],
                      ['Submission Time', 'Message', 'Edit', 'Delete']]
 
     return table_headers

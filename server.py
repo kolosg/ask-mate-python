@@ -90,7 +90,7 @@ def add_comment_to_question(quest_id=None):
     else:
         data_manager.post_comment_to_question(quest_id, request.form['message'])
         return redirect(url_for('route_question', quest_id=int(quest_id)))
-    return render_template('add-question.html', quest_id=int(quest_id), comment=comment, questions=questions, q_fields=table_headers[0])
+    return render_template('add-question.html', id=int(quest_id), comment=comment, table=questions, q_fields=table_headers[0])
 
 
 @app.route('/comments/<comment_id>/edit', methods=['GET', 'POST'])
@@ -109,6 +109,20 @@ def route_delete_comment(comment_id=None):
     quest_id = data_manager.get_question_id(int(comment_id))
     data_manager.delete_comment(comment_id)
     return redirect(url_for('route_question', quest_id=quest_id["question_id"]))
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+def add_comment_to_answer(answer_id=None):
+    if request.method == 'GET':
+        all_answer = data_manager.list_answers()
+        table_headers = define_table_headers()
+        comment_answer = True
+    else:
+        data_manager.post_comment_to_answer(answer_id, request.form['message'])
+        quest_id = str(data_manager.get_question_id_from_answers(answer_id)['question_id'])
+        return redirect(url_for('route_question', quest_id=quest_id))
+    return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3])
+
 
 
 if __name__ == "__main__":
