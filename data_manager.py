@@ -129,6 +129,7 @@ def post_comment_to_question(cursor, quest_id, message):
 def select_comments(cursor):
     cursor.execute("""
                     SELECT submission_time, message, question_id, id, answer_id FROM comment
+                    ORDER BY submission_time DESC
                     """)
     comments = cursor.fetchall()
     return comments
