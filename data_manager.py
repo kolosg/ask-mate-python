@@ -21,9 +21,9 @@ def list_answers(cursor):
     return all_answer
 
 
-def count_answers(quest_id):
-    any_answer = list_answers()
-    return any(answer['question_id'] == int(quest_id) for answer in any_answer)
+def count_answers(quest_id, func):
+    table = func
+    return any(record['question_id'] == int(quest_id) for record in table)
 
 
 @database_connection.connection_handler
@@ -160,3 +160,13 @@ def get_question_id(cursor, comment_id):
                     where id = %(comment_id)s
                     """, dict(comment_id=comment_id))
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def delete_comment(cursor, comment_id):
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE id = %(comment_id)s
+                    """, dict(comment_id=comment_id))
+
+

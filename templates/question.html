@@ -64,6 +64,7 @@
                     </strong></button>
                     <div class="collapse" id="multiCollapseExamplequestion">
                         <div class="card card-body">
+                        {% if is_comment %}
                             <h3>Comments for this question: </h3>
                             <br>
                             <table border="2" cellpadding="5" cellspacing="" width="800"
@@ -93,7 +94,7 @@
                                                 </form>
                                             </td>
                                             <td>
-                                                <form action="/" align="center"
+                                                <form action="/comments/{{ comment.id }}/delete" align="center"
                                                       method="post">
                                                     <button type="submit" style="width:80px; height:25px">
                                                         <strong>Delete</strong>
@@ -105,6 +106,9 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                            {% else %}
+                            <h3>There are no comments to this question yet.</h3>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
