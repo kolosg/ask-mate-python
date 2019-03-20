@@ -123,3 +123,12 @@ def post_comment_to_question(cursor, quest_id, message):
                     INSERT INTO comment(question_id, message, submission_time)
                     VALUES(%(quest_id)s, %(message)s, %(dt)s)
                     """, dict(quest_id=quest_id, message=message, dt=dt))
+
+
+@database_connection.connection_handler
+def select_comments(cursor):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    """)
+    comments = cursor.fetchall()
+    return comments

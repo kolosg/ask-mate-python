@@ -27,8 +27,9 @@ def route_question(quest_id=None):
     table_headers = define_table_headers()
     questions = data_manager.list_all_question()
     is_answer = data_manager.count_answers(quest_id)
+    comments = data_manager.select_comments()
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
-                           all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer)
+                           all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -81,11 +82,13 @@ def route_delete_answer(answer_id=None):
 @app.route("/question/<quest_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_question(quest_id=None):
     if request.method == 'GET':
+        questions = data_manager.list_all_question()
+        table_headers = define_table_headers()
         comment = True
     else:
         data_manager.post_comment_to_question(quest_id, request.form['message'])
         return redirect(url_for('route_question', quest_id=int(quest_id)))
-    return render_template('add-question.html', quest_id=int(quest_id), comment=comment)
+    return render_template('add-question.html', quest_id=int(quest_id), comment=comment, questions=questions, q_fields=table_headers[0])
 
 
 
