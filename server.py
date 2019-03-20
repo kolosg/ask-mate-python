@@ -92,6 +92,16 @@ def add_comment_to_question(quest_id=None):
     return render_template('add-question.html', quest_id=int(quest_id), comment=comment, questions=questions, q_fields=table_headers[0])
 
 
+@app.route('/comments/<comment_id>/edit', methods=['GET', 'POST'])
+def route_edit_comment(comment_id=None):
+    if request.method == 'GET':
+        comments = data_manager.select_comments()
+    else:
+        quest_id = data_manager.get_question_id(int(comment_id))
+        data_manager.update_comment(request.form['message'], int(comment_id))
+        return redirect(url_for('route_question', quest_id=quest_id["question_id"]))
+    return render_template('edit.html', comment_id=int(comment_id), comments=comments)
+
 
 if __name__ == "__main__":
     app.run(

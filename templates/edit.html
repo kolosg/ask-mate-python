@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AskMate Edit Comment</title>
+</head>
+<body>
+<h1>Edit your comment:</h1>
+{% for comment in comments %}
+    {% if comment.id == comment_id %}
+        <form action='/comments/{{ comment_id }}/edit' method="post">
+            <label for="message-input">Your Comment:</label>
+            <p><textarea id="message-input" name="message" rows="10" cols="100"
+                         required>{{ comment.message }}</textarea>
+            </p>
+            <p>
+                <button type="submit" style=" width:200px; height:30px"><strong>Submit</strong></button>
+            </p>
+        </form>
+    {% endif %}
+{% endfor %}
+</body>
+</html>

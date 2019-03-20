@@ -142,3 +142,21 @@ def get_comment_ids(cursor):
                     """)
     ids = cursor.fetchall()
     return str(ids['id'])
+
+
+@database_connection.connection_handler
+def update_comment(cursor, message, comment_id):
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+                    UPDATE comment
+                    SET message = %(message)s, submission_time = %(dt)s
+                    WHERE id = %(comment_id)s
+                    """, dict(message=message, comment_id=comment_id, dt=dt))
+
+@database_connection.connection_handler
+def get_question_id(cursor, comment_id):
+    cursor.execute("""
+                    select question_id from comment 
+                    where id = %(comment_id)s
+                    """, dict(comment_id=comment_id))
+    return cursor.fetchone()
