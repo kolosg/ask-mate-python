@@ -106,14 +106,8 @@ def route_edit_comment(comment_id=None):
 
 @app.route("/comments/<comment_id>/delete", methods=["POST"])
 def route_delete_comment(comment_id=None):
-    try:
-        quest_id = data_manager.get_question_id(int(comment_id))
-        data_manager.delete_comment(comment_id)
-        return redirect(url_for('route_question', quest_id=quest_id["question_id"]))
-    except:
-        quest_id = str(data_manager.get_question_id_from_answers(request.form['answer_id'])['question_id'])
-        data_manager.delete_comment(comment_id)
-        return redirect(url_for('route_question', quest_id=quest_id))
+    data_manager.delete_comment(comment_id)
+    return redirect(url_for('route_question', quest_id=request.form['question_id']))
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
