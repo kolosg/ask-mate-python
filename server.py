@@ -3,6 +3,7 @@ import data_manager
 from util import define_table_headers
 
 
+
 app = Flask(__name__)
 
 
@@ -137,11 +138,17 @@ def route_edit_answer(answer_id=None):
 @app.route('/search')
 def search():
     searchstring = request.args.get('q')
+
     question_results = data_manager.question_results('%' + searchstring + '%')
     answer_results = data_manager.answer_results('%' + searchstring + '%')
+
+    highlighted_question = data_manager.add_selector_to_search_result(searchstring, question_results)
+    highlighted_answer = data_manager.add_selector_to_search_result(searchstring, answer_results)
+
     table_headers = define_table_headers()
     return render_template('search-results.html', question_results=question_results, answer_results=answer_results,
-                           question_headers=table_headers[0], answer_headers=table_headers[1][:-4])
+                           question_headers=table_headers[0], answer_headers=table_headers[1][:-4], searchstring=searchstring,
+                           highlighted_question=highlighted_question, highlighted_answer=highlighted_answer)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 import database_connection
 from datetime import datetime
 
+
 @database_connection.connection_handler
 def list_all_question(cursor):
     cursor.execute("""
@@ -215,7 +216,7 @@ def update_answer(cursor, message, answer_id):
 def question_results(cursor, search):
     cursor.execute("""
                     SELECT * FROM question
-                    WHERE title LIKE %(search)s OR message LIKE %(search)s
+                    WHERE title ILIKE %(search)s OR message ILIKE %(search)s
                     ORDER BY submission_time DESC 
                     """, dict(search=search))
     result = cursor.fetchall()
@@ -225,8 +226,21 @@ def question_results(cursor, search):
 def answer_results(cursor, search):
     cursor.execute("""
                     SELECT * FROM answer
-                    WHERE message LIKE %(search)s
+                    WHERE message ILIKE %(search)s
                     ORDER BY submission_time DESC 
                     """, dict(search=search))
     result = cursor.fetchall()
     return result
+
+def add_selector_to_search_result(search_phrase, dicts):
+    for dict in dicts:
+        for key, value in dict.items():
+            if key == 'message' or key == 'title':
+                if search_phrase.lower() in value:
+                    dict[key] = dict[key].replace(search_phrase.lower(), '<span id="highlight">' + search_phrase.lower() + '</span>')
+                elif search_phrase.upper() in value:
+                    dict[key] = dict[key].replace(search_phrase.upper(), '<span id="highlight">' + search_phrase.upper() + '</span>')
+                elif search_phrase.capitalize() in value:
+                    dict[key] = dict[key].replace(search_phrase.capitalize(), '<span id="highlight">' + search_phrase.capitalize() + '</span>')
+
+    return dicts

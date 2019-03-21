@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 {% if question_results %}
-<h1>Question search results:</h1><br>
-<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <h1>Question search results:</h1><br>
+    <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
         {% for item in question_headers %}
@@ -17,24 +18,26 @@
     </thead>
     <tbody>
     <tr>
-        {% for question in question_results %}
+        {% for question in highlighted_question %}
             <tr>
                 {% for key, value in question.items() %}
                     {% if key != 'id' and key != 'image' %}
                         {% if key == 'message' %}
-                            <td align="center"><a href="question/{{ question.id }}">{{ value }}</a></td>
+
+                            <td align="center"><a
+                                    href="question/{{ question.id }}">{{ value|safe }}</a></td>
                         {% else %}
-                            <td align="center">{{ value }}</td>
+                            <td align="center">{{ value|safe}}</td>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
-    {% endif %}
-    </tbody>
+{% endif %}
+</tbody>
 </table>
 <br>
-{% if answer_results  %}
+{% if answer_results %}
     <h1>Answer search results:</h1><br>
     <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
@@ -46,14 +49,14 @@
     </thead>
     <tbody>
     <tr>
-        {% for answer in answer_results %}
+        {% for answer in highlighted_answer %}
             <tr>
                 {% for key, value in answer.items() %}
                     {% if key != 'id' and key != 'image' and key != 'question_id' %}
                         {% if key == 'message' %}
-                            <td align="center"><a href="question/{{ answer.question_id }}">{{ value }}</a></td>
+                            <td align="center"><a href="question/{{ answer.question_id }}">{{ value|safe }}</a></td>
                         {% else %}
-                            <td align="center">{{ value }}</td>
+                            <td align="center">{{ value|safe }}</td>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -61,7 +64,7 @@
         {% endfor %}
 {% endif %}
 {% if not answer_results and not question_results %}
-<h1>Oops.. No results..</h1>
+    <h1>Oops.. No results..</h1>
 {% endif %}
 </tbody>
 </table>

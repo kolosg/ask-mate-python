@@ -20,3 +20,7 @@ th {
     border-right: 4px solid white;
     border-left: 4px solid white;
 }
+
+#highlight {
+    background-color: yellow;
+}
