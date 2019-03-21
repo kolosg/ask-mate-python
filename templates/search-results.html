@@ -5,12 +5,69 @@
     <title>Search Results</title>
 </head>
 <body>
-{% for question in question_results %}
-{{ question }}
-{% endfor %}
+{% if question_results %}
+<h1>Question search results:</h1><br>
+<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <thead>
+    <tr>
+        {% for item in question_headers %}
+            <th>{{ item }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for question in question_results %}
+            <tr>
+                {% for key, value in question.items() %}
+                    {% if key != 'id' and key != 'image' %}
+                        {% if key == 'message' %}
+                            <td align="center"><a href="question/{{ question.id }}">{{ value }}</a></td>
+                        {% else %}
+                            <td align="center">{{ value }}</td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+</table>
 <br>
-{% for answer in answer_results %}
-{{ answer }}
-{% endfor %}
+{% if answer_results  %}
+    <h1>Answer search results:</h1><br>
+    <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <thead>
+    <tr>
+        {% for item in answer_headers %}
+            <th>{{ item }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for answer in answer_results %}
+            <tr>
+                {% for key, value in answer.items() %}
+                    {% if key != 'id' and key != 'image' and key != 'question_id' %}
+                        {% if key == 'message' %}
+                            <td align="center"><a href="question/{{ answer.question_id }}">{{ value }}</a></td>
+                        {% else %}
+                            <td align="center">{{ value }}</td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+{% endif %}
+{% if not answer_results and not question_results %}
+<h1>Oops.. No results..</h1>
+{% endif %}
+</tbody>
+</table>
+<br><br>
+<form action="/">
+    <button type="submit" style="width:180px; height:25px"><strong>Go back to homepage</strong></button>
+</form>
 </body>
 </html>

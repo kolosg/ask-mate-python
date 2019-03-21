@@ -1,5 +1,4 @@
 import database_connection
-import util
 from datetime import datetime
 
 @database_connection.connection_handler
@@ -104,7 +103,7 @@ def delete_answer(cursor, answer_id):
 def get_question_id_to_delete(cursor, answer_id):
     cursor.execute("""
                     SELECT question_id FROM answer
-                    where id = %(answer_id)s
+                    WHERE id = %(answer_id)s
                     """, dict(answer_id=answer_id))
     return cursor.fetchone()
 
@@ -169,8 +168,8 @@ def update_comment(cursor, message, comment_id):
 @database_connection.connection_handler
 def get_question_id(cursor, comment_id):
     cursor.execute("""
-                    select question_id from comment 
-                    where id = %(comment_id)s
+                    SELECT question_id FROM comment 
+                    WHERE id = %(comment_id)s
                     """, dict(comment_id=comment_id))
     return cursor.fetchone()
 
@@ -186,9 +185,9 @@ def delete_comment(cursor, comment_id):
 @database_connection.connection_handler
 def get_question_id_from_answers(cursor, answer_id):
     cursor.execute("""
-                    select answer.id, answer.question_id, comment.answer_id
-                    from answer
-                    inner join comment ON comment.answer_id = answer_id
+                    SELECT answer.id, answer.question_id, comment.answer_id
+                    FROM answer
+                    INNER JOIN comment ON comment.answer_id = answer_id
                     WHERE answer.id = %(answer_id)s
                     """, dict(answer_id=answer_id))
     return cursor.fetchone()
@@ -215,8 +214,9 @@ def update_answer(cursor, message, answer_id):
 @database_connection.connection_handler
 def question_results(cursor, search):
     cursor.execute("""
-                    select * from question
-                    where title like %(search)s or message like %(search)s
+                    SELECT * FROM question
+                    WHERE title LIKE %(search)s OR message LIKE %(search)s
+                    ORDER BY submission_time DESC 
                     """, dict(search=search))
     result = cursor.fetchall()
     return result
@@ -224,8 +224,9 @@ def question_results(cursor, search):
 @database_connection.connection_handler
 def answer_results(cursor, search):
     cursor.execute("""
-                    select * from answer
-                    where message like %(search)s
+                    SELECT * FROM answer
+                    WHERE message LIKE %(search)s
+                    ORDER BY submission_time DESC 
                     """, dict(search=search))
     result = cursor.fetchall()
     return result

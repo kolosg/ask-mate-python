@@ -139,7 +139,9 @@ def search():
     searchstring = request.args.get('q')
     question_results = data_manager.question_results('%' + searchstring + '%')
     answer_results = data_manager.answer_results('%' + searchstring + '%')
-    return render_template('search-results.html', question_results=question_results, answer_results=answer_results)
+    table_headers = define_table_headers()
+    return render_template('search-results.html', question_results=question_results, answer_results=answer_results,
+                           question_headers=table_headers[0], answer_headers=table_headers[1][:-4])
 
 
 if __name__ == "__main__":
