@@ -14,3 +14,9 @@ th {
 .card-body {
     width: auto;
 }
+
+
+#sideborder {
+    border-right: 4px solid white;
+    border-left: 4px solid white;
+}
