@@ -78,38 +78,41 @@
                                     </thead>
                                     <tbody>
                                     {% for comment in comments %}
-                                        {% if quest_id == comment.question_id %}
-                                            <tr>
-                                                {% for key, value in comment.items() %}
-                                                    {% if key == 'submission_time' or key == 'message' %}
-                                                        <td align="center">{{ value }}</td>
-                                                    {% endif %}
-                                                {% endfor %}
-                                                <td>
-                                                    <form action='/comments/{{ comment.id }}/edit' align="center"
-                                                          method="get">
-                                                        <button type="submit" style="width:80px; height:25px">
-                                                            <strong>Edit</strong>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form action="/comments/{{ comment.id }}/delete" align="center"
-                                                          method="post">
-                                                        <input type="hidden" value="{{ comment.question_id }}" name="question_id">
-                                                        <button type="submit" style="width:80px; height:25px">
-                                                            <strong>Delete</strong>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
+                                        {% if not comment.answer_id %}
+                                            {% if quest_id == comment.question_id %}
+                                                <tr>
+                                                    {% for key, value in comment.items() %}
+                                                        {% if key == 'submission_time' or key == 'message' %}
+                                                            <td align="center">{{ value }}</td>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <td>
+                                                        <form action='/comments/{{ comment.id }}/edit' align="center"
+                                                              method="get">
+                                                            <button type="submit" style="width:80px; height:25px">
+                                                                <strong>Edit</strong>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form action="/comments/{{ comment.id }}/delete" align="center"
+                                                              method="post">
+                                                            <input type="hidden" value="{{ comment.question_id }}"
+                                                                   name="question_id">
+                                                            <button type="submit" style="width:80px; height:25px">
+                                                                <strong>Delete</strong>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
                                         {% endif %}
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
+                                    {% else %}
                                 <h3>There are no comments to this question yet.</h3>
                             {% endif %}
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                 </div>
@@ -210,8 +213,9 @@
                                                             <td>
                                                                 <form action="/comments/{{ comment.id }}/delete"
                                                                       align="center" method="post">
-                                                                    <input type="hidden" value="{{ answer.question_id }}"
-                                                                    name="question_id">
+                                                                    <input type="hidden"
+                                                                           value="{{ answer.question_id }}"
+                                                                           name="question_id">
                                                                     <button type="submit"
                                                                             style="width:80px; height:25px">
                                                                         <strong>Delete</strong>

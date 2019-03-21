@@ -26,6 +26,11 @@ def count_answers(quest_id, func):
     return any(record['question_id'] == int(quest_id) for record in table)
 
 
+
+def count_comments(quest_id):
+    table = select_comments()
+    return any(record['question_id'] == int(quest_id) for record in table if record['answer_id'] == None)
+
 @database_connection.connection_handler
 def ask_new_question(cursor, title, message):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -49,7 +54,15 @@ def update_question(cursor, title, message, quest_id):
 @database_connection.connection_handler
 def delete_question(cursor, quest_id):
     cursor.execute("""
-                    DELETE FROM question, answer, comment
+                    DELETE FROM comment
+                    WHERE question_id = %(quest_id)s
+                    """, dict(quest_id=quest_id))
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE question_id = %(quest_id)s
+                    """, dict(quest_id=quest_id))
+    cursor.execute("""
+                    DELETE FROM question
                     WHERE id = %(quest_id)s
                     """, dict(quest_id=quest_id))
 
@@ -182,12 +195,12 @@ def get_question_id_from_answers(cursor, answer_id):
 
 
 @database_connection.connection_handler
-def post_comment_to_answer(cursor, answer_id, message):
+def post_comment_to_answer(cursor, quest_id, answer_id, message):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
-                    INSERT INTO comment(answer_id, message, submission_time)
-                    VALUES(%(answer_id)s, %(message)s, %(dt)s)
-                    """, dict(answer_id=answer_id, message=message, dt=dt))
+                    INSERT INTO comment(question_id, answer_id, message, submission_time)
+                    VALUES(%(quest_id)s, %(answer_id)s, %(message)s, %(dt)s)
+                    """, dict(quest_id=int(quest_id), answer_id=answer_id, message=message, dt=dt))
 
 @database_connection.connection_handler
 def update_answer(cursor, message, answer_id):

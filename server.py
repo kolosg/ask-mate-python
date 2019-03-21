@@ -27,7 +27,7 @@ def route_question(quest_id=None):
     table_headers = define_table_headers()
     questions = data_manager.list_all_question()
     is_answer = data_manager.count_answers(quest_id, data_manager.list_answers())
-    is_comment = data_manager.count_answers(quest_id, data_manager.select_comments())
+    is_comment = data_manager.count_comments(quest_id)
     comments = data_manager.select_comments()
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
                            all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments,
@@ -57,7 +57,6 @@ def route_edit_question(quest_id=None):
 
 @app.route('/question/<quest_id>/delete', methods=['POST'])
 def route_delete_question(quest_id=None):
-    data_manager.delete_all_answer_of_question(quest_id)
     data_manager.delete_question(int(quest_id))
     return redirect('/list')
 
@@ -117,8 +116,8 @@ def add_comment_to_answer(answer_id=None):
         table_headers = define_table_headers()
         comment_answer = True
     else:
-        data_manager.post_comment_to_answer(answer_id, request.form['message'])
-        quest_id = str(data_manager.get_question_id_from_answers(answer_id)['question_id'])
+        quest_id = data_manager.get_question_id_from_answers(answer_id)['question_id']
+        data_manager.post_comment_to_answer(quest_id, answer_id, request.form['message'])
         return redirect(url_for('route_question', quest_id=quest_id))
     return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3])
 
