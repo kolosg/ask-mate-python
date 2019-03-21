@@ -76,8 +76,8 @@
                                         {% endfor %}
                                     </tr>
                                     </thead>
+                                {% for comment in comments %}
                                     <tbody>
-                                    {% for comment in comments %}
                                         {% if not comment.answer_id %}
                                             {% if quest_id == comment.question_id %}
                                                 <tr>

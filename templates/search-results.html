@@ -23,7 +23,6 @@
                 {% for key, value in question.items() %}
                     {% if key != 'id' and key != 'image' %}
                         {% if key == 'message' %}
-
                             <td align="center"><a
                                     href="question/{{ question.id }}">{{ value|safe }}</a></td>
                         {% else %}

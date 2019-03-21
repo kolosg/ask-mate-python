@@ -26,10 +26,22 @@ def count_answers(quest_id, func):
     return any(record['question_id'] == int(quest_id) for record in table)
 
 
-
 def count_comments(quest_id):
     table = select_comments()
     return any(record['question_id'] == int(quest_id) for record in table if record['answer_id'] == None)
+
+
+def count_answer_comments(quest_id):
+    bools = []
+    answers = list_answers()
+    comments = select_comments()
+    for answer in answers:
+        if answer['question_id'] == int(quest_id):
+            bools.append(str(any(comment['answer_id'] == answer['id'] for comment in comments)))
+
+    return bools
+
+
 
 @database_connection.connection_handler
 def ask_new_question(cursor, title, message):
