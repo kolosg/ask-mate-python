@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Latest questions:</h1>
-<form action="/search?q=<search_phrase>">
+<form action="{{ url_for('search') }}">
     <input type="text" placeholder="Search..." name="q">
     <button type="submit" style="margin:10px; width:70px; height:25px"><strong>GO!</strong></button></form><br>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">

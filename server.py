@@ -134,10 +134,11 @@ def route_edit_answer(answer_id=None):
     return render_template('add-question.html', answer_id=int(answer_id), answers=answers, answer_update=answer_update)
 
 
-@app.route('/search?q=<search_phrase>')
-def search(search_phrase=None):
-    results = data_manager.search_results('%' + request.form['q'] + '%')
-    return render_template('search-results.html', results=results, search_phrase=search_phrase)
+@app.route('/search')
+def search():
+    searchstring = request.args.get('q')
+    results = data_manager.search_results('%' + searchstring + '%')
+    return render_template('search-results.html', results=results)
 
 
 if __name__ == "__main__":

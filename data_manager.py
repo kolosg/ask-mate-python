@@ -215,8 +215,8 @@ def update_answer(cursor, message, answer_id):
 @database_connection.connection_handler
 def search_results(cursor, search):
     cursor.execute("""
-                    select * from question, answer
-                    where title like %(search)s or message like %(search)s  
+                    select question.*, answer.* from question, answer
+                    where title like %(search)s or question.message like %(search)s or answer.message like %(search)s
                     """, dict(search=search))
     result = cursor.fetchall()
     return result
