@@ -124,6 +124,17 @@ def add_comment_to_answer(answer_id=None):
     return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3])
 
 
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def route_edit_answer(answer_id=None):
+    if request.method == 'GET':
+        answer_update = True
+        answers = data_manager.list_answers()
+    else:
+        data_manager.update_answer(request.form['message'], int(answer_id))
+        quest_id = str(data_manager.get_question_id_from_answers(answer_id)['question_id'])
+        return redirect(url_for('route_question', quest_id=quest_id))
+    return render_template('add-question.html', answer_id=int(answer_id), answers=answers, answer_update=answer_update)
+
 
 if __name__ == "__main__":
     app.run(

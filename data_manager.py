@@ -49,7 +49,7 @@ def update_question(cursor, title, message, quest_id):
 @database_connection.connection_handler
 def delete_question(cursor, quest_id):
     cursor.execute("""
-                    DELETE FROM question
+                    DELETE FROM question, answer, comment
                     WHERE id = %(quest_id)s
                     """, dict(quest_id=quest_id))
 
@@ -188,3 +188,14 @@ def post_comment_to_answer(cursor, answer_id, message):
                     INSERT INTO comment(answer_id, message, submission_time)
                     VALUES(%(answer_id)s, %(message)s, %(dt)s)
                     """, dict(answer_id=answer_id, message=message, dt=dt))
+
+@database_connection.connection_handler
+def update_answer(cursor, message, answer_id):
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+                    UPDATE answer
+                    SET message = %(message)s, submission_time = %(dt)s
+                    WHERE id = %(answer_id)s
+                    """, dict(message=message, answer_id=answer_id, dt=dt))
+
+
