@@ -5,8 +5,12 @@
     <title>Search Results</title>
 </head>
 <body>
-{% for result in results %}
-{{ result }}
+{% for question in question_results %}
+{{ question }}
+{% endfor %}
+<br>
+{% for answer in answer_results %}
+{{ answer }}
 {% endfor %}
 </body>
 </html>

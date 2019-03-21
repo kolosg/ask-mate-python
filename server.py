@@ -137,8 +137,9 @@ def route_edit_answer(answer_id=None):
 @app.route('/search')
 def search():
     searchstring = request.args.get('q')
-    results = data_manager.search_results('%' + searchstring + '%')
-    return render_template('search-results.html', results=results)
+    question_results = data_manager.question_results('%' + searchstring + '%')
+    answer_results = data_manager.answer_results('%' + searchstring + '%')
+    return render_template('search-results.html', question_results=question_results, answer_results=answer_results)
 
 
 if __name__ == "__main__":
