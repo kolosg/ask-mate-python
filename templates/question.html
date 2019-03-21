@@ -172,20 +172,56 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td id="TD">
                                 <div class="bootstrap-iso">
                                     <div class="collapse" id="multiCollapseExample{{ answer.id }}">
                                         <div class="card card-body">
                                             <h5>Comments for this answer: </h5>
-                                            {% for comment in comments %}
-                                                {% if answer_id == comment.answer_id %}
-                                                    {% for key, value in comment.items() %}
-                                                        {% if key == 'message' %}
-                                                            <strong>{{ value }}</strong>
-                                                        {% endif %}
+                                            <br>
+                                            <table border="2" cellpadding="5" cellspacing="" width="800"
+                                                   style="border-collapse:collapse;">
+                                                <thead>
+                                                <tr>
+                                                    {% for item in comment_headers %}
+                                                        <th>{{ item }}</th>
                                                     {% endfor %}
-                                                {% endif %}
-                                            {% endfor %}
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for comment in comments %}
+                                                    {% if answer.id == comment.answer_id %}
+                                                        <tr>
+                                                            {% for key, value in comment.items() %}
+                                                                {% if key == 'submission_time' or key == 'message' %}
+                                                                    <td align="center">{{ value }}</td>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            <td>
+                                                                <form action='/comments/{{ comment.id }}/edit'
+                                                                      align="center"
+                                                                      method="get">
+                                                                    <button type="submit"
+                                                                            style="width:80px; height:25px">
+                                                                        <strong>Edit</strong>
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                            <td>
+                                                                <form action="/comments/{{ comment.id }}/delete"
+                                                                      align="center"
+                                                                      method="post">
+                                                                    <button type="submit"
+                                                                            style="width:80px; height:25px">
+                                                                        <strong>Delete</strong>
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+
                                         </div>
                                     </div>
                                 </div>
