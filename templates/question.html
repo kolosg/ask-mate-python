@@ -138,7 +138,7 @@
                     {% if quest_id == answer.question_id %}
                         <tr>
                             {% for key, value in answer.items() %}
-                                {% if key != 'id' and key != 'image' and key != 'question_id' %}
+                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' %}
                                     <td align="center">{{ value }}</td>
                                 {% endif %}
                             {% endfor %}
@@ -176,10 +176,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td id="sideborder" colspan="7" align="center">
+                            <td colspan="7" align="center">
                                 <div class="bootstrap-iso">
                                     <div class="collapse" id="multiCollapseExample{{ answer.id }}">
                                         <div class="card card-body">
+                                        {% if answer.bool == True %}
                                             <h5><strong>Comments for this answer: </strong></h5>
                                             <br>
                                             <table border="2" cellpadding="5" cellspacing="" width="800"
@@ -227,6 +228,11 @@
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
+                                            {% else %}
+                                            <br>
+                                            <h3>There are no comments for this answer...bruh...</h3>
+                                            <br>
+                                            {% endif %}
                                             <br><br>
                                         </div>
                                     </div>

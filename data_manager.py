@@ -37,10 +37,19 @@ def count_answer_comments(quest_id):
     comments = select_comments()
     for answer in answers:
         if answer['question_id'] == int(quest_id):
-            bools.append(str(any(comment['answer_id'] == answer['id'] for comment in comments)))
+            bools.append(any(comment['answer_id'] == answer['id'] for comment in comments))
 
     return bools
 
+
+
+def last_answer_comment(dict, list_of_bools):
+    for i in range(len(dict)):
+        for j in range(len(list_of_bools)):
+            if i == j:
+                dict[i]['bool'] = list_of_bools[j]
+
+    return dict
 
 
 @database_connection.connection_handler
@@ -106,6 +115,10 @@ def post_answer(cursor, quest_id, message):
 
 @database_connection.connection_handler
 def delete_answer(cursor, answer_id):
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE answer_id = %(answer_id)s
+                    """, dict(answer_id=answer_id))
     cursor.execute("""
                     DELETE FROM answer
                     WHERE id = %(answer_id)s

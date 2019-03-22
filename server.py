@@ -30,10 +30,11 @@ def route_question(quest_id=None):
     is_answer = data_manager.count_answers(quest_id, data_manager.list_answers())
     is_comment = data_manager.count_comments(quest_id)
     comments = data_manager.select_comments()
-    is_answer_comment = data_manager.count_answer_comments(quest_id)
+    count_comments = data_manager.count_answer_comments(quest_id)
+    is_answer_comment = data_manager.last_answer_comment(all_answer, count_comments)
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
                            all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments,
-                           comment_headers=table_headers[2], is_comment=is_comment, is_answer_comment=is_answer_comment)
+                           comment_headers=table_headers[2], is_comment=is_comment, count_comments=count_comments, is_answer_comment=is_answer_comment)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
