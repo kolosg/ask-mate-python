@@ -1,6 +1,4 @@
-body {
-    background-color: red;
-}
+
 
 td {
     padding: 0;
@@ -29,7 +27,7 @@ th {
     height: 22px;
     background-color: #2aabd2;
     padding: 30px;
-    margin: -15px;
+    margin: -8px;
 }
 
 .header strong {
@@ -51,3 +49,10 @@ th {
     background-color: white;
 }
 
+.login {
+    text-align: center;
+}
+
+a:visited {
+    color: blue;
+}

@@ -8,9 +8,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index_route():
-    return redirect('/register')
+    return render_template('main.html')
 
-@app.route('/register')
+@app.route('/registration')
 def route_register():
     return render_template('main.html')
 
