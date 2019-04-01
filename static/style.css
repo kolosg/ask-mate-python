@@ -16,7 +16,32 @@ th {
 }
 
 
-
 #highlight {
     background-color: yellow;
+}
+
+.header {
+    height: 22px;
+    background-color: #2aabd2;
+    padding: 30px;
+    margin: -15px;
+}
+
+.header strong {
+    font-size: 1.3rem;
+}
+
+.header input {
+    border-radius: 5px;
+    height: 17px;
+    border-style: solid;
+    border-color: #2aabd2;
+}
+
+.header button {
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #2aabd2;
+    height: 23px;
+    background-color: white;
 }
