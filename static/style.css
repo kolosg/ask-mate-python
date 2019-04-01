@@ -1,3 +1,7 @@
+body {
+    background-color: red;
+}
+
 td {
     padding: 0;
     border: 1;
@@ -19,6 +23,7 @@ th {
 #highlight {
     background-color: yellow;
 }
+
 
 .header {
     height: 22px;
@@ -45,3 +50,4 @@ th {
     height: 23px;
     background-color: white;
 }
+
