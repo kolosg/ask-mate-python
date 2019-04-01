@@ -283,3 +283,4 @@ def get_hash_pw(cursor, login_name):
                     """, dict(login_name=login_name))
 
     return cursor.fetchone()
+
