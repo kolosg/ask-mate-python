@@ -273,3 +273,13 @@ def registration_data_to_table(cursor, firstname, lastname, username, password):
                     INSERT INTO user_information (first_name, last_name, user_name, password, reg_date)
                      VALUES (%(firstname)s, %(lastname)s, %(username)s, %(password)s, %(regdate)s)
                      """, dict(firstname=firstname, lastname=lastname, username=username, password=password, regdate=dt))
+
+
+@database_connection.connection_handler
+def get_hash_pw(cursor, login_name):
+    cursor.execute("""
+                    SELECT password FROM user_information
+                    WHERE user_name = %(login_name)s
+                    """, dict(login_name=login_name))
+
+    return cursor.fetchone()
