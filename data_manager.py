@@ -88,12 +88,7 @@ def delete_question(cursor, quest_id):
                     """, dict(quest_id=quest_id))
 
 
-@database_connection.connection_handler
-def delete_all_answer_of_question(cursor, quest_id):
-    cursor.execute("""
-                    DELETE FROM answer
-                    WHERE question_id = %(quest_id)s 
-                    """, dict(quest_id=quest_id))
+
 
 @database_connection.connection_handler
 def get_latest_id(cursor):

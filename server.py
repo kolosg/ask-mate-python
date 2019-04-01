@@ -6,9 +6,17 @@ from util import define_table_headers
 
 app = Flask(__name__)
 
-
 @app.route('/')
-def route_index():
+def index_route():
+    return redirect('/register')
+
+@app.route('/register')
+def route_register():
+    return render_template('main.html')
+
+
+@app.route('/latest-questions')
+def route_latest_questions():
     latest_questions = data_manager.list_latest_questions()
     table_headers = define_table_headers()
     return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0])
