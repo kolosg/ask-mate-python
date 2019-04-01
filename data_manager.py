@@ -264,3 +264,12 @@ def add_selector_to_search_result(search_phrase, dicts):
                     dict[key] = dict[key].replace(search_phrase.capitalize(), '<span id="highlight">' + search_phrase.capitalize() + '</span>')
 
     return dicts
+
+
+@database_connection.connection_handler
+def registration_data_to_table(cursor, firstname, lastname, username, password):
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+                    INSERT INTO user_information (first_name, last_name, user_name, password, reg_date)
+                     VALUES (%(firstname)s, %(lastname)s, %(username)s, %(password)s, %(regdate)s)
+                     """, dict(firstname=firstname, lastname=lastname, username=username, password=password, regdate=dt))
