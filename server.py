@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 from util import define_table_headers
-
+import password_handler
 
 
 app = Flask(__name__)
@@ -10,9 +10,15 @@ app = Flask(__name__)
 def index_route():
     return render_template('main.html')
 
-@app.route('/registration')
+@app.route('/registration', methods=["GET", "POST"])
 def route_register():
-    return render_template('main.html')
+    if request.method == "POST":
+        password = password_handler.hash_password(request.form["password"])
+        data_manager.registration_data_to_table(request.form["firstname"], request.form["lastname"],
+                                                request.form["username"], password)
+        return redirect('latest-questions')
+
+    return render_template('registration.html')
 
 
 @app.route('/latest-questions')

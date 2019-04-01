@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h1 align="center">PandaProject AskMate</h1>
+
+<div class="registration">
+    <form action='/registration' method="post">
+        <h2>Registration</h2>
+        <p><input type="text"  name="firstname" placeholder="first name" required minlength="5"></p>
+        <p><input type="text" name="lastname" placeholder="last name" required minlength="5"></p>
+        <p><input type="text" name="username" placeholder="username" required minlength="5"></p>
+        <p><input type="password" name="password" placeholder="password" required minlength="5"></p>
+        <button id="login" type="submit">Register</button>
+        </form>
+    <p>Already have an account? <a href="/">Log in!</a></p>
+    <p>See the latest <a href="/latest-questions"> questions.</a></p>
+</div>
+</body>
+</html>
