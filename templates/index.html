@@ -6,7 +6,7 @@
 </head>
 <body>
 {% if session["username"] %}
-Your a logged in as {{ session["username"] }}
+Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
     <form action="/logout">
         <button type="submit">Logout</button>
     </form>

@@ -28,6 +28,13 @@ def index_route():
     return render_template('main.html')
 
 
+@app.route('/users')
+def route_and_list_users():
+    table_headers = define_table_headers()
+    users = data_manager.list_users()
+    return render_template('users.html', users=users, user_headers=table_headers[3])
+
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -53,9 +60,12 @@ def route_register():
 
 @app.route('/latest-questions')
 def route_latest_questions():
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])["id"]
     latest_questions = data_manager.list_latest_questions()
     table_headers = define_table_headers()
-    return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0])
+    return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0],
+                           user_id=user_id if session else "")
 
 
 @app.route('/list')
@@ -67,6 +77,8 @@ def route_list():
 
 @app.route('/question/<quest_id>')
 def route_question(quest_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])["id"]
     data_manager.increase_view_number(quest_id)
     all_answer = data_manager.list_answers()
     table_headers = define_table_headers()
@@ -78,7 +90,14 @@ def route_question(quest_id=None):
     is_answer_comment = data_manager.last_answer_comment(all_answer, count_comments)
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
                            all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments,
-                           comment_headers=table_headers[2], is_comment=is_comment, count_comments=count_comments, is_answer_comment=is_answer_comment)
+                           comment_headers=table_headers[2], is_comment=is_comment, count_comments=count_comments, is_answer_comment=is_answer_comment,
+                           user_id=user_id if session else "")
+
+
+@app.route('/user/<user_id>')
+def route_user_page(user_id):
+    user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+    return render_template('user.html', user_id=user_id)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])

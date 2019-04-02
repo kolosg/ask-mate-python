@@ -10,7 +10,6 @@
     <input type="text" placeholder="Search..." name="q">
     <button type="submit" style="margin:10px; width:70px; height:25px"><strong>GO!</strong></button></form><br>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
-<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
         {% for item in question_headers %}
@@ -18,8 +17,7 @@
         {% endfor %}
     </tr>
     </thead>
-    <tbody>
-    <tr>
+        <tbody>
         {% if all_question %}
             {% for question in all_question %}
                 <tr>

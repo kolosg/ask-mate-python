@@ -301,4 +301,12 @@ def accept_answer(cursor, username):
                     WHERE user_id = %(username)s and accepted = FALSE
                     """, dict(username=username))
 
+
+@database_connection.connection_handler
+def list_users(cursor):
+    cursor.execute("""
+                SELECT CONCAT(CONCAT(first_name, ' '),last_name) as name, user_name, reg_date FROM user_information
+                ORDER BY user_name DESC 
+                """)
+
     return cursor.fetchall()
