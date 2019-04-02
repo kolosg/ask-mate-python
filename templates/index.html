@@ -7,6 +7,9 @@
 <body>
 {% if session["username"] %}
 Your a logged in as {{ session["username"] }}
+    <form action="/logout">
+        <button type="submit">Logout</button>
+    </form>
 {% else %}
 You are not logged in
 {% endif %}
