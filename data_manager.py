@@ -159,12 +159,12 @@ def list_latest_questions(cursor):
 
 
 @database_connection.connection_handler
-def post_comment_to_question(cursor, quest_id, message):
+def post_comment_to_question(cursor, quest_id, message, userid):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
-                    INSERT INTO comment(question_id, message, submission_time)
-                    VALUES(%(quest_id)s, %(message)s, %(dt)s)
-                    """, dict(quest_id=quest_id, message=message, dt=dt))
+                    INSERT INTO comment(question_id, message, submission_time, user_id)
+                    VALUES(%(quest_id)s, %(message)s, %(dt)s, %(userid)s)
+                    """, dict(quest_id=quest_id, message=message, dt=dt, userid=userid))
 
 
 @database_connection.connection_handler
@@ -213,12 +213,13 @@ def delete_comment(cursor, comment_id):
 
 
 @database_connection.connection_handler
-def post_comment_to_answer(cursor, quest_id, answer_id, message):
+def post_comment_to_answer(cursor, quest_id, answer_id, message, userid):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
-                    INSERT INTO comment(question_id, answer_id, message, submission_time)
-                    VALUES(%(quest_id)s, %(answer_id)s, %(message)s, %(dt)s)
-                    """, dict(quest_id=int(quest_id), answer_id=answer_id, message=message, dt=dt))
+                    INSERT INTO comment(question_id, answer_id, message, submission_time, user_id)
+                    VALUES(%(quest_id)s, %(answer_id)s, %(message)s, %(dt)s, %(userid)s)
+                    """, dict(quest_id=int(quest_id), answer_id=answer_id, message=message, dt=dt, userid=userid))
+
 
 @database_connection.connection_handler
 def update_answer(cursor, message, answer_id):

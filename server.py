@@ -133,7 +133,7 @@ def add_comment_to_question(quest_id=None):
         table_headers = define_table_headers()
         comment = True
     else:
-        data_manager.post_comment_to_question(quest_id, request.form['message'])
+        data_manager.post_comment_to_question(quest_id, request.form['message'], data_manager.get_user_id_from_session(session["username"])["id"])
         return redirect(url_for('route_question', quest_id=int(quest_id)))
     return render_template('add-question.html', id=int(quest_id), comment=comment, table=questions, q_fields=table_headers[0])
 
@@ -162,7 +162,7 @@ def add_comment_to_answer(answer_id=None):
         table_headers = define_table_headers()
         comment_answer = True
     else:
-        data_manager.post_comment_to_answer(int(request.form["questionid"]), answer_id, request.form['message'])
+        data_manager.post_comment_to_answer(int(request.form["questionid"]), answer_id, request.form['message'], data_manager.get_user_id_from_session(session["username"])["id"])
         return redirect(url_for('route_question', quest_id=int(request.form["questionid"])))
     return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3])
 
