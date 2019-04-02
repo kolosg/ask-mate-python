@@ -204,17 +204,6 @@ def delete_comment(cursor, comment_id):
 
 
 @database_connection.connection_handler
-def get_question_id_from_answers(cursor, answer_id):
-    cursor.execute("""
-                    SELECT answer.id, answer.question_id, comment.answer_id
-                    FROM answer
-                    INNER JOIN comment ON comment.answer_id = answer_id
-                    WHERE answer.id = %(answer_id)s
-                    """, dict(answer_id=answer_id))
-    return cursor.fetchone()
-
-
-@database_connection.connection_handler
 def post_comment_to_answer(cursor, quest_id, answer_id, message):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""

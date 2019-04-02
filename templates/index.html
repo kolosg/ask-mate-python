@@ -31,7 +31,7 @@ You are not logged in
             {% for question in latest_questions %}
                 <tr>
                     {% for key, value in question.items() %}
-                        {% if key != 'id' and key != 'image' %}
+                        {% if key != 'id' and key != 'image' and key!= 'user_id' %}
                             {% if key == 'message' %}
                                 <td align="center"><a href="question/{{ question.id }}">{{ value }}</a></td>
                             {% else %}
