@@ -5,6 +5,14 @@
     <title>AskMate: PandaProject</title>
 </head>
 <body>
+{% if session["username"] %}
+Your a logged in as {{ session["username"] }}
+    <form action="/logout">
+        <button type="submit">Logout</button>
+    </form>
+{% else %}
+You are not logged in
+{% endif %}
 <h1>Latest questions:</h1>
 <form action="{{ url_for('search') }}">
     <input type="text" placeholder="Search..." name="q">

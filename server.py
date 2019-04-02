@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, session, escape
 import data_manager
 from util import define_table_headers
 import password_handler
 
 
 app = Flask(__name__)
+app.secret_key = "blabla"
 
 @app.route('/', methods=['GET', 'POST'])
 def index_route():
@@ -13,6 +14,8 @@ def index_route():
             hashpw = data_manager.get_hash_pw(request.form["username"])['password']
             is_match = password_handler.verify_password(request.form["password"], hashpw)
             if is_match:
+                session["username"] = request.form["username"]
+
                 return redirect('latest-questions')
             no_match = True
             return render_template('main.html', no_match=no_match)
@@ -20,6 +23,12 @@ def index_route():
             no_match = True
             return render_template('main.html', no_match=no_match)
     return render_template('main.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/')
 
 
 @app.route('/registration', methods=["GET", "POST"])
