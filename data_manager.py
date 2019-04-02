@@ -110,12 +110,12 @@ def get_latest_id(cursor):
 
 
 @database_connection.connection_handler
-def post_answer(cursor, quest_id, message):
+def post_answer(cursor, quest_id, message, userid):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message)
-                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s)
-                    """, dict(dt=dt, quest_id=quest_id, message=message))
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, user_id)
+                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s, %(userid)s)
+                    """, dict(dt=dt, quest_id=quest_id, message=message, userid=userid))
 
 @database_connection.connection_handler
 def delete_answer(cursor, answer_id):
