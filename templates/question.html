@@ -16,6 +16,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+{% if session["username"] %}
+Your a logged in as {{ session["username"] }}
+{% else %}
+You are not logged in
+{% endif %}
 <h1>Question:</h1>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead id="question">
