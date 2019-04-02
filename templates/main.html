@@ -7,14 +7,16 @@
 </head>
 <body>
 <h1 align="center">PandaProject AskMate</h1>
-
+{% if no_match %}
+<script>alert('Invalid Username or Password Bruh!')</script>
+{%  endif %}
 <div class="login">
     <form action='/' method="post">
         <h2>Login</h2>
         <p><input type="text" id="username-input" name="username" placeholder="username" required minlength="5"></p>
         <p><input type="password" id="password-input" name="password" placeholder="password" required minlength="5"></p>
         <button id="login" type="submit">Login</button>
-        </form>
+    </form>
     <p>Dont have an acoount? <a href="/registration">Sign up!</a></p>
     <p>See the latest <a href="/latest-questions"> questions.</a></p>
 </div>

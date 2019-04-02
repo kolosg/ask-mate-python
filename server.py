@@ -6,9 +6,21 @@ import password_handler
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index_route():
+    if request.method == 'POST':
+        try:
+            hashpw = data_manager.get_hash_pw(request.form["username"])['password']
+            is_match = password_handler.verify_password(request.form["password"], hashpw)
+            if is_match:
+                return redirect('latest-questions')
+            no_match = True
+            return render_template('main.html', no_match=no_match)
+        except TypeError:
+            no_match = True
+            return render_template('main.html', no_match=no_match)
     return render_template('main.html')
+
 
 @app.route('/registration', methods=["GET", "POST"])
 def route_register():
