@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accept Answers</title>
+</head>
+<body>
+{% for answer in pendind_answers %}
+    {% if answer["accepted"] != True %}
+    <h3>Message: {{ answer["message"] }}</h3>
+    <form action="/accept-pending-answer" method="post">
+        <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+        <button type="submit">Accept Answer</button>
+    </form>
+    <form action="/delete-pending-answer" method="post">
+        <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+        <button type="submit">Delete Answer</button>
+    </form>
+    {% endif %}
+{% endfor %}
+</table>
+</body>
+</html>

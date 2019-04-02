@@ -295,11 +295,33 @@ def check_username_already_exist(cursor, username):
 
 
 @database_connection.connection_handler
-def accept_answer(cursor, username):
+def get_pending_answer(cursor, username):
     cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE user_id = %(username)s and accepted = FALSE
+                    SELECT answer.id, answer.submission_time, answer.vote_number,
+                    answer.question_id, answer.message, answer.image,
+                    answer.user_id, answer.accepted
+                    FROM answer JOIN user_information ON user_information.id = answer.user_id
+                    WHERE user_name = %(username)s and accepted = FALSE
                     """, dict(username=username))
+
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def accept_pending_answer(cursor, questionid, answerid):
+    cursor.execute("""
+                    UPDATE answer
+                    SET accepted = TRUE
+                    WHERE question_id = %(questionid)s and id = %(answerid)s
+                    """, dict(questionid=questionid, answerid=answerid))
+
+
+@database_connection.connection_handler
+def deleting_pending_answer(cursor, questionid, answerid):
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE question_id = %(questionid)s and id = %(answerid)s
+                    """, dict(questionid=questionid, answerid=answerid))
 
 
 @database_connection.connection_handler

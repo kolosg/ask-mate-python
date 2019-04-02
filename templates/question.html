@@ -17,9 +17,9 @@
 </head>
 <body>
 {% if session["username"] %}
-Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
+    Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
 {% else %}
-You are not logged in
+    You are not logged in
 {% endif %}
 <h1>Question:</h1>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
@@ -74,50 +74,50 @@ You are not logged in
                                 <br>
                                 <table border="2" cellpadding="5" cellspacing="" width="800"
                                        style="border-collapse:collapse;">
-                                    <thead>
-                                    <tr>
-                                        {% for item in comment_headers %}
-                                            <th>{{ item }}</th>
-                                        {% endfor %}
-                                    </tr>
-                                    </thead>
+                                <thead>
+                                <tr>
+                                    {% for item in comment_headers %}
+                                        <th>{{ item }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
                                 {% for comment in comments %}
                                     <tbody>
-                                        {% if not comment.answer_id %}
-                                            {% if quest_id == comment.question_id %}
-                                                <tr>
-                                                    {% for key, value in comment.items() %}
-                                                        {% if key == 'submission_time' or key == 'message' %}
-                                                            <td align="center">{{ value }}</td>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                    <td>
-                                                        <form action='/comments/{{ comment.id }}/edit' align="center"
-                                                              method="get">
-                                                            <button type="submit" style="width:80px; height:25px">
-                                                                <strong>Edit</strong>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        <form action="/comments/{{ comment.id }}/delete" align="center"
-                                                              method="post">
-                                                            <input type="hidden" value="{{ comment.question_id }}"
-                                                                   name="question_id">
-                                                            <button type="submit" style="width:80px; height:25px">
-                                                                <strong>Delete</strong>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            {% endif %}
+                                    {% if not comment.answer_id %}
+                                        {% if quest_id == comment.question_id %}
+                                            <tr>
+                                                {% for key, value in comment.items() %}
+                                                    {% if key == 'submission_time' or key == 'message' %}
+                                                        <td align="center">{{ value }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <td>
+                                                    <form action='/comments/{{ comment.id }}/edit' align="center"
+                                                          method="get">
+                                                        <button type="submit" style="width:80px; height:25px">
+                                                            <strong>Edit</strong>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <form action="/comments/{{ comment.id }}/delete" align="center"
+                                                          method="post">
+                                                        <input type="hidden" value="{{ comment.question_id }}"
+                                                               name="question_id">
+                                                        <button type="submit" style="width:80px; height:25px">
+                                                            <strong>Delete</strong>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         {% endif %}
-                                    {% endfor %}
-                                    {% else %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
                                 <h3>There are no comments for this question...bruh...</h3>
                             {% endif %}
-                                    </tbody>
-                                </table>
+                            </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -142,109 +142,111 @@ You are not logged in
                 {% for answer in all_answer %}
                     {% if quest_id == answer.question_id %}
                         {% if answer.accepted != False %}
-                        <tr>
-                            {% for key, value in answer.items() %}
-                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id' %}
-                                    <td align="center">{{ value }}</td>
-                                {% endif %}
-                            {% endfor %}
-                            <td>
-                                <form action="/answer/{{ answer.id }}/edit" align="center"
-                                      method="get">
-                                    <button type="submit" style="width:80px; height:25px">
-                                        <strong>Edit</strong>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/answer/{{ answer.id }}/delete" align="center" method="post">
-                                    <button type="submit" style="width:80px; height:25px"><strong>Delete</strong>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/answer/{{ answer.id }}/new-comment" align="center"
-                                      method="get">
-                                    <button type="submit" style="width:120px; height:25px">
-                                        <strong>Post Comment</strong>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <div id="button" class="bootstrap-iso">
-                                    <button type="button" align="center" data-toggle="collapse"
-                                            data-target="#multiCollapseExample{{ answer.id }}"
-                                            aria-expanded="false" aria-controls="multiCollapseExample{{ answer.id }}"
-                                            style="margin:10px; width:110px; height:25px"><strong>
-                                        See Comments
-                                    </strong></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" align="center">
-                                <div class="bootstrap-iso">
-                                    <div class="collapse" id="multiCollapseExample{{ answer.id }}">
-                                        <div class="card card-body">
-                                        {% if answer.bool == True %}
-                                            <h5><strong>Comments for this answer: </strong></h5>
-                                            <br>
-                                            <table border="2" cellpadding="5" cellspacing="" width="800"
-                                                   style="border-collapse:collapse;">
-                                                <thead>
-                                                <tr>
-                                                    {% for item in comment_headers %}
-                                                        <th>{{ item }}</th>
-                                                    {% endfor %}
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for comment in comments %}
-                                                    {% if answer.id == comment.answer_id %}
+                            <tr>
+                                {% for key, value in answer.items() %}
+                                    {% if key != 'id' and key != 'image' and key != 'question_id' and
+                                key != 'bool' and key != 'user_id' and key != 'accepted' %}
+                                        <td align="center">{{ value }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    <form action="/answer/{{ answer.id }}/edit" align="center"
+                                          method="get">
+                                        <button type="submit" style="width:80px; height:25px">
+                                            <strong>Edit</strong>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="/answer/{{ answer.id }}/delete" align="center" method="post">
+                                        <button type="submit" style="width:80px; height:25px"><strong>Delete</strong>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="/answer/{{ answer.id }}/new-comment" align="center"
+                                          method="get">
+                                        <button type="submit" style="width:120px; height:25px">
+                                            <strong>Post Comment</strong>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div id="button" class="bootstrap-iso">
+                                        <button type="button" align="center" data-toggle="collapse"
+                                                data-target="#multiCollapseExample{{ answer.id }}"
+                                                aria-expanded="false"
+                                                aria-controls="multiCollapseExample{{ answer.id }}"
+                                                style="margin:10px; width:110px; height:25px"><strong>
+                                            See Comments
+                                        </strong></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" align="center">
+                                    <div class="bootstrap-iso">
+                                        <div class="collapse" id="multiCollapseExample{{ answer.id }}">
+                                            <div class="card card-body">
+                                                {% if answer.bool == True %}
+                                                    <h5><strong>Comments for this answer: </strong></h5>
+                                                    <br>
+                                                    <table border="2" cellpadding="5" cellspacing="" width="800"
+                                                           style="border-collapse:collapse;">
+                                                        <thead>
                                                         <tr>
-                                                            {% for key, value in comment.items() %}
-                                                                {% if key == 'submission_time' or key == 'message' %}
-                                                                    <td align="center">{{ value }}</td>
-                                                                {% endif %}
+                                                            {% for item in comment_headers %}
+                                                                <th>{{ item }}</th>
                                                             {% endfor %}
-                                                            <td>
-                                                                <form action='/comments/{{ comment.id }}/edit'
-                                                                      align="center"
-                                                                      method="get">
-                                                                    <button type="submit"
-                                                                            style="width:80px; height:25px">
-                                                                        <strong>Edit</strong>
-                                                                    </button>
-                                                                </form>
-                                                            </td>
-                                                            <td>
-                                                                <form action="/comments/{{ comment.id }}/delete"
-                                                                      align="center" method="post">
-                                                                    <input type="hidden"
-                                                                           value="{{ answer.question_id }}"
-                                                                           name="question_id">
-                                                                    <button type="submit"
-                                                                            style="width:80px; height:25px">
-                                                                        <strong>Delete</strong>
-                                                                    </button>
-                                                                </form>
-                                                            </td>
                                                         </tr>
-                                                    {% endif %}
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                            {% else %}
-                                            <br>
-                                            <h3>There are no comments for this answer...bruh...</h3>
-                                            <br>
-                                            {% endif %}
-                                            <br><br>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for comment in comments %}
+                                                            {% if answer.id == comment.answer_id %}
+                                                                <tr>
+                                                                    {% for key, value in comment.items() %}
+                                                                        {% if key == 'submission_time' or key == 'message' %}
+                                                                            <td align="center">{{ value }}</td>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                    <td>
+                                                                        <form action='/comments/{{ comment.id }}/edit'
+                                                                              align="center"
+                                                                              method="get">
+                                                                            <button type="submit"
+                                                                                    style="width:80px; height:25px">
+                                                                                <strong>Edit</strong>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                    <td>
+                                                                        <form action="/comments/{{ comment.id }}/delete"
+                                                                              align="center" method="post">
+                                                                            <input type="hidden"
+                                                                                   value="{{ answer.question_id }}"
+                                                                                   name="question_id">
+                                                                            <button type="submit"
+                                                                                    style="width:80px; height:25px">
+                                                                                <strong>Delete</strong>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    <br>
+                                                    <h3>There are no comments for this answer...bruh...</h3>
+                                                    <br>
+                                                {% endif %}
+                                                <br><br>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         {% endif %}
                     {% endif %}
                 {% endfor %}

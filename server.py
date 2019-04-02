@@ -15,9 +15,10 @@ def index_route():
             is_match = password_handler.verify_password(request.form["password"], hashpw)
             if is_match:
                 session["username"] = request.form["username"]
-                accept_answers = data_manager.accept_answer(session["username"])
-                if accept_answers:
-                    return render_template('user.html', accept_answers=accept_answers)
+                pendind_answers = data_manager.get_pending_answer(session["username"])
+
+                if pendind_answers:
+                    return render_template('accept_answer.html', pendind_answers=pendind_answers)
 
                 return redirect('latest-questions')
             no_match = True
@@ -212,8 +213,26 @@ def search():
 
     table_headers = define_table_headers()
     return render_template('search-results.html', question_results=question_results, answer_results=answer_results,
-                           question_headers=table_headers[0], answer_headers=table_headers[1][:-4], searchstring=searchstring,
+                           question_headers=table_headers[0], akacsanswer_headers=table_headers[1][:-4], searchstring=searchstring,
                            highlighted_question=highlighted_question, highlighted_answer=highlighted_answer)
+
+
+@app.route('/accept-pending-answer', methods=["POST"])
+def accept_pending_answer():
+    data_manager.accept_pending_answer(request.form["questionid"], request.form["answerid"])
+    pendind_answers = data_manager.get_pending_answer(session["username"])
+    if pendind_answers:
+        return render_template('accept_answer.html', pendind_answers=pendind_answers)
+    return redirect('latest-questions')
+
+
+@app.route('/delete-pending-answer', methods=["POST"])
+def delete_pending_answer():
+    data_manager.deleting_pending_answer(request.form["questionid"], request.form["answerid"])
+    pendind_answers = data_manager.get_pending_answer(session["username"])
+    if pendind_answers:
+        return render_template('accept_answer.html', pendind_answers=pendind_answers)
+    return redirect('latest-questions')
 
 
 if __name__ == "__main__":
