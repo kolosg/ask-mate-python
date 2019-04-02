@@ -17,7 +17,7 @@
 </head>
 <body>
 {% if session["username"] %}
-Your a logged in as {{ session["username"] }}
+Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
 {% else %}
 You are not logged in
 {% endif %}
