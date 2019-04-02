@@ -160,9 +160,8 @@ def add_comment_to_answer(answer_id=None):
         table_headers = define_table_headers()
         comment_answer = True
     else:
-        quest_id = data_manager.get_question_id_from_answers(answer_id)['question_id']
-        data_manager.post_comment_to_answer(quest_id, answer_id, request.form['message'])
-        return redirect(url_for('route_question', quest_id=quest_id))
+        data_manager.post_comment_to_answer(int(request.form["questionid"]), answer_id, request.form['message'])
+        return redirect(url_for('route_question', quest_id=int(request.form["questionid"])))
     return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3])
 
 
