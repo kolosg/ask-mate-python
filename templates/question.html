@@ -16,6 +16,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+{% if session["username"] %}
+Your a logged in as {{ session["username"] }}
+{% else %}
+You are not logged in
+{% endif %}
 <h1>Question:</h1>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead id="question">
@@ -31,7 +36,7 @@
             {% if quest_id == question.id %}
                 <tr>
                     {% for key, value in question.items() %}
-                        {% if key != 'id' and key != 'image' %}
+                        {% if key != 'id' and key != 'image' and key != 'user_id' %}
                             <td align="center">{{ value }}</td>
                         {% endif %}
                     {% endfor %}
@@ -138,7 +143,7 @@
                     {% if quest_id == answer.question_id %}
                         <tr>
                             {% for key, value in answer.items() %}
-                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' %}
+                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id' %}
                                     <td align="center">{{ value }}</td>
                                 {% endif %}
                             {% endfor %}
