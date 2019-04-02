@@ -13,6 +13,11 @@ def index_route():
 @app.route('/registration', methods=["GET", "POST"])
 def route_register():
     if request.method == "POST":
+
+        if request.form["username"] == data_manager.check_username_already_exist(request.form["username"])["user_name"]:
+            existing_username = True
+            return render_template('registration.html', existing_username=existing_username)
+
         password = password_handler.hash_password(request.form["password"])
         data_manager.registration_data_to_table(request.form["firstname"], request.form["lastname"],
                                                 request.form["username"], password)
