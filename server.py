@@ -25,6 +25,13 @@ def index_route():
     return render_template('main.html')
 
 
+@app.route('/users')
+def route_and_list_users():
+    table_headers = define_table_headers()
+    users = data_manager.list_users()
+    return render_template('users.html', users=users, user_headers=table_headers[3])
+
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)

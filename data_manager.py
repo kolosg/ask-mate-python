@@ -292,3 +292,13 @@ def check_username_already_exist(cursor, username):
                     """, dict(username=username))
 
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def list_users(cursor):
+    cursor.execute("""
+                SELECT CONCAT(CONCAT(first_name, ' '),last_name) as name, user_name, reg_date FROM user_information
+                ORDER BY user_name DESC 
+                """)
+
+    return cursor.fetchall()
