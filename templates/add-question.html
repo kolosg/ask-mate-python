@@ -32,6 +32,7 @@
                 <p><textarea id="message-input" name="message" rows="10" cols="100"
                              required>{{ answer.message }}</textarea>
                 </p>
+                <input type="hidden" value="{{ answer.question_id }}" name="questionid">
                 <p>
                     <button type="submit" style=" width:200px; height:30px"><strong>Submit</strong></button>
                 </p>
@@ -54,7 +55,7 @@
                 {% if record.id == id %}
                     <tr>
                         {% for key, value in record.items() %}
-                            {% if key != 'id' and key!= 'image' %}
+                            {% if key != 'id' and key!= 'image' and key!= 'user_id' %}
                                 <td align="center">{{ value }}</td>
                             {% endif %}
                         {% endfor %}
@@ -90,7 +91,7 @@
                 {% if record.id == id %}
                     <tr>
                         {% for key, value in record.items() %}
-                            {% if key != 'id' and key!= 'image' %}
+                            {% if key != 'id' and key!= 'image' and key!= 'user_id' %}
                                 <td align="center">{{ value }}</td>
                             {% endif %}
                         {% endfor %}
