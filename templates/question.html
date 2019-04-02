@@ -36,7 +36,7 @@ You are not logged in
             {% if quest_id == question.id %}
                 <tr>
                     {% for key, value in question.items() %}
-                        {% if key != 'id' and key != 'image' %}
+                        {% if key != 'id' and key != 'image' and key != 'user_id' %}
                             <td align="center">{{ value }}</td>
                         {% endif %}
                     {% endfor %}
@@ -143,7 +143,7 @@ You are not logged in
                     {% if quest_id == answer.question_id %}
                         <tr>
                             {% for key, value in answer.items() %}
-                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' %}
+                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id' %}
                                     <td align="center">{{ value }}</td>
                                 {% endif %}
                             {% endfor %}
