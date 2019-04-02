@@ -15,6 +15,9 @@ def index_route():
             is_match = password_handler.verify_password(request.form["password"], hashpw)
             if is_match:
                 session["username"] = request.form["username"]
+                accept_answers = data_manager.accept_answer(session["username"])
+                if accept_answers:
+                    return render_template('user.html', accept_answers=accept_answers)
 
                 return redirect('latest-questions')
             no_match = True

@@ -113,8 +113,8 @@ def get_latest_id(cursor):
 def post_answer(cursor, quest_id, message, userid):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message, user_id)
-                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s, %(userid)s)
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, user_id, accepted)
+                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s, %(userid)s, FALSE)
                     """, dict(dt=dt, quest_id=quest_id, message=message, userid=userid))
 
 @database_connection.connection_handler
@@ -292,3 +292,13 @@ def check_username_already_exist(cursor, username):
                     """, dict(username=username))
 
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def accept_answer(cursor, username):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE user_id = %(username)s and accepted = FALSE
+                    """, dict(username=username))
+
+    return cursor.fetchall()

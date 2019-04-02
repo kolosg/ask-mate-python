@@ -141,6 +141,7 @@ You are not logged in
             {% if all_answer %}
                 {% for answer in all_answer %}
                     {% if quest_id == answer.question_id %}
+                        {% if answer.accepted != False %}
                         <tr>
                             {% for key, value in answer.items() %}
                                 {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id' %}
@@ -244,6 +245,7 @@ You are not logged in
                                 </div>
                             </td>
                         </tr>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
