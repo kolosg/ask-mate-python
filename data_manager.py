@@ -53,13 +53,22 @@ def last_answer_comment(dict, list_of_bools):
 
 
 @database_connection.connection_handler
-def ask_new_question(cursor, title, message):
+def ask_new_question(cursor, title, message, userid):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     cursor.execute("""
-                    INSERT INTO question (submission_time, view_number, vote_number, title, message)
-                    VALUES (%(dt)s, 0, 0, %(add_title)s, %(add_message)s)
-                    """, dict(dt=dt, add_title=title, add_message=message))
+                    INSERT INTO question (submission_time, view_number, vote_number, title, message, user_id)
+                    VALUES (%(dt)s, 0, 0, %(add_title)s, %(add_message)s, %(userid)s)
+                    """, dict(dt=dt, add_title=title, add_message=message, userid=userid))
+
+
+@database_connection.connection_handler
+def get_user_id_from_session(cursor, username):
+    cursor.execute("""
+                    SELECT id FROM user_information
+                    WHERE user_name = %(username)s
+                    """, dict(username=username))
+    return cursor.fetchone()
 
 
 

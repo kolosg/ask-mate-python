@@ -81,7 +81,8 @@ def route_question(quest_id=None):
 @app.route('/add-question', methods=['GET', 'POST'])
 def route_ask_question(quest_id=None):
     if request.method == 'POST':
-        data_manager.ask_new_question(request.form['title'], request.form['message'])
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        data_manager.ask_new_question(request.form['title'], request.form['message'], user_id)
         return redirect('/question/' + str(data_manager.get_latest_id()['id']))
 
 
