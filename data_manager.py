@@ -284,3 +284,12 @@ def get_hash_pw(cursor, login_name):
 
     return cursor.fetchone()
 
+
+@database_connection.connection_handler
+def check_username_already_exist(cursor, username):
+    cursor.execute("""
+                    SELECT user_name FROM user_information
+                    WHERE user_name = %(username)s
+                    """, dict(username=username))
+
+    return cursor.fetchone()
