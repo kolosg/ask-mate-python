@@ -111,7 +111,8 @@ def post_answer(quest_id=None):
     questions = data_manager.list_all_question()
     table_headers = define_table_headers()
     if request.method == "POST":
-        data_manager.post_answer(quest_id, request.form["message"])
+
+        data_manager.post_answer(quest_id, request.form["message"], data_manager.get_user_id_from_session(session["username"])["id"])
 
         return redirect("/question/" + quest_id)
 
