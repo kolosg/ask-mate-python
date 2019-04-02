@@ -276,6 +276,16 @@ def registration_data_to_table(cursor, firstname, lastname, username, password):
 
 
 @database_connection.connection_handler
+def get_hash_pw(cursor, login_name):
+    cursor.execute("""
+                    SELECT password FROM user_information
+                    WHERE user_name = %(login_name)s
+                    """, dict(login_name=login_name))
+
+    return cursor.fetchone()
+
+
+@database_connection.connection_handler
 def check_username_already_exist(cursor, username):
     cursor.execute("""
                     SELECT user_name FROM user_information
