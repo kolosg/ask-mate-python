@@ -60,3 +60,28 @@ th {
 a:visited {
     color: blue;
 }
+
+img {
+    height: 177px;
+    margin-right: 10px;
+}
+
+#user_info td {
+    text-align: center;
+}
+
+#answer-to-question {
+    margin-left: 70px;
+}
+
+h4 {
+    margin-left: 70px;
+}
+
+#multiCollapseExampleanswer {
+    margin-top: -15px;
+}
+
+#type {
+    text-align: center;
+}
