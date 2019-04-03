@@ -16,7 +16,8 @@
                     {% if quest_id == answer.question_id %}
                         <tr>
                             {% for key, value in answer.items() %}
-                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id' %}
+                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id'
+                                        and key != 'accepted' %}
                                     <td id="answers" align="center">{{ value }}</td>
                                 {% endif %}
                             {% endfor %}

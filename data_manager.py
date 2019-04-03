@@ -115,8 +115,8 @@ def get_latest_id(cursor):
 def post_answer(cursor, quest_id, message, userid):
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message, user_id)
-                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s, %(userid)s)
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, user_id, accepted)
+                    VALUES(%(dt)s, 0, %(quest_id)s, %(message)s, %(userid)s, FALSE)
                     """, dict(dt=dt, quest_id=quest_id, message=message, userid=userid))
 
 @database_connection.connection_handler
@@ -296,6 +296,37 @@ def check_username_already_exist(cursor, username):
                     """, dict(username=username))
 
     return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def get_pending_answer(cursor):
+    cursor.execute("""
+                    SELECT answer.id, answer.submission_time, answer.vote_number,
+                    answer.question_id, answer.message, answer.image,
+                    answer.user_id, answer.accepted, question.user_id as question_user_id
+                    FROM answer JOIN user_information ON user_information.id = answer.user_id
+                    JOIN question ON answer.question_id = question.id
+                    WHERE question_id = question.id and accepted = FALSE
+                    """)
+
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def accept_pending_answer(cursor, questionid, answerid):
+    cursor.execute("""
+                    UPDATE answer
+                    SET accepted = TRUE
+                    WHERE question_id = %(questionid)s and id = %(answerid)s
+                    """, dict(questionid=questionid, answerid=answerid))
+
+
+@database_connection.connection_handler
+def deleting_pending_answer(cursor, questionid, answerid):
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE question_id = %(questionid)s and id = %(answerid)s
+                    """, dict(questionid=questionid, answerid=answerid))
 
 
 @database_connection.connection_handler
