@@ -5,21 +5,25 @@
     <title>Accept Answers</title>
 </head>
 <body>
-{% if pending_answers %}
+{{ pending_answers }}
 {% for answer in pending_answers %}
-    <h3>Message: {{ answer["message"] }}</h3>
-    <form action="/accept-pending-answer" method="post">
-        <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
-        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
-        <button type="submit">Accept Answer</button>
-    </form>
-    <form action="/delete-pending-answer" method="post">
-        <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
-        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
-        <button type="submit">Delete Answer</button>
-    </form>
+    {% for question in all_question %}
+        {% if question["id"] == answer["question_id"] %}
+            {{ question }}
+            <h3>Message: {{ answer["message"] }}</h3>
+            <form action="/accept-pending-answer" method="post">
+                <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+                <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+                <button type="submit">Accept Answer</button>
+            </form>
+            <form action="/delete-pending-answer" method="post">
+                <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+                <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+                <button type="submit">Delete Answer</button>
+            </form>
+        {% endif %}
+    {% endfor %}
 {% endfor %}
-{% endif %}
 </table>
 </body>
 </html>

@@ -27,8 +27,9 @@ def index_route():
 
 @app.route('/unaccepted-answers')
 def unaccepted_answers():
+    all_question = data_manager.list_all_question()
     pending_answers = data_manager.get_pending_answer()
-    return render_template('accept_answer.html', pending_answers=pending_answers)
+    return render_template('accept_answer.html', pending_answers=pending_answers, all_question=all_question)
 
 
 @app.route('/accept-pending-answer', methods=["POST"])
@@ -44,7 +45,8 @@ def accept_pending_answer():
 def delete_pending_answer():
     data_manager.deleting_pending_answer(request.form["questionid"], request.form["answerid"])
     pending_answers = data_manager.get_pending_answer()
-    if pending_answers:
+    if len(pending_answers) > 0:
+        pending_answers = data_manager.get_pending_answer()
         return render_template('accept_answer.html', pending_answers=pending_answers)
     return redirect('latest-questions')
 
