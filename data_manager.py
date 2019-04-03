@@ -380,6 +380,8 @@ def select_question_ids_from_user_answers(cursor, username):
                     """, dict(username=username))
     return cursor.fetchall()
 
+
+
 @database_connection.connection_handler
 def get_corresponding_questions(cursor, user_answer_qid):
     cursor.execute("""
@@ -390,18 +392,44 @@ def get_corresponding_questions(cursor, user_answer_qid):
     return cursor.fetchall()
 
 
+@database_connection.connection_handler
+def get_pending_questions(cursor, malac):
+    cursor.execute("""
+                    SELECT * FROM question
+                    where id = %(malac)s
+                    """, dict(malac=malac))
+    return cursor.fetchall()
+
+
 def question_ids_from_user_answers(answer_question_ids):
     question_ids = []
     for id in answer_question_ids:
-        question_ids.append(id['question_id'])
+        if id['question_id'] not in question_ids:
+            question_ids.append(id['question_id'])
     return question_ids
 
 
 def questions_linked_to_answers(question_ids):
     the_questions = []
     for id in question_ids:
-        the_questions.extend(get_corresponding_questions(id))
+        the_questions.append(get_corresponding_questions(id)[0])
     return the_questions
+
+
+def get_pending_question(list_of_pending_ids):
+    pending_questions = []
+    print(list_of_pending_ids)
+    for id in list_of_pending_ids:
+        pending_questions.append(get_pending_questions(id))
+    return pending_questions
+
+
+def get_pending_answer_ids(list):
+    pending_ids = []
+    for dict in list:
+        if dict['question_id'] not in pending_ids:
+            pending_ids.append(dict['question_id'])
+    return pending_ids
 
 
 @database_connection.connection_handler
@@ -412,3 +440,12 @@ def select_user_comments(cursor, username):
                     WHERE user_name = %(username)s
                     """, dict(username=username))
     return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_id_from_answers(cursor, answerid):
+    cursor.execute("""
+                    SELECT user_id FROM answer
+                    WHERE id = %(answerid)s
+                    """, dict(answerid=answerid))
+    return cursor.fetchone()

@@ -13,6 +13,7 @@
         <tr>
             {% if all_answer %}
                 {% for answer in all_answer %}
+                    {% if answer.accepted == True %}
                     {% if quest_id == answer.question_id %}
                         <tr>
                             {% for key, value in answer.items() %}
@@ -65,6 +66,7 @@
                                 </div>
                             </td>
                         </tr>
+                    {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}

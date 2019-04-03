@@ -124,6 +124,8 @@ def route_question(quest_id=None):
 @app.route('/user/<user_id>')
 def route_user_page(user_id=None):
     pending_answers = data_manager.get_pending_answer()
+    pending_ids = data_manager.get_pending_answer_ids(pending_answers)
+    pending_questions = data_manager.get_pending_question(pending_ids)
     ids = data_manager.question_ids_from_user_answers(data_manager.select_question_ids_from_user_answers(session["username"]))
     needed_questions = data_manager.questions_linked_to_answers(ids)
     table_headers = define_table_headers()
@@ -135,7 +137,7 @@ def route_user_page(user_id=None):
     return render_template('user.html', user_id=user_id, user_info=user_info, user_questions=user_questions,
                            question_headers=table_headers[0], user_answers=user_answers, ids=ids, needed_questions=needed_questions,
                            answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments,
-                           pending_answers=pending_answers)
+                           pending_answers=pending_answers, pending_ids=pending_ids, pending_questions=pending_questions)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -231,6 +233,11 @@ def add_comment_to_answer(answer_id=None):
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
 def route_edit_answer(answer_id=None):
     if request.method == 'GET':
+        if not session:
+            return redirect(url_for('route_latest_questions'))
+        elif session:
+            if data_manager.get_user_id_from_session(session["username"])["id"] != data_manager.get_user_id_from_answers(answer_id)["user_id"]:
+                return redirect(url_for('route_latest_questions'))
         answer_update = True
         answers = data_manager.list_answers()
     else:
