@@ -1,0 +1,66 @@
+<h1>Question:</h1>
+<table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <thead id="question">
+    <tr>
+    <th>User</th>
+        {% for item in question_headers %}
+            <th>{{ item }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% if questions %}
+        {% for question in questions %}
+            {% if quest_id == question.id %}
+                <tr>
+                    {% for key, value in question.items() %}
+                        {% if key != 'id' and key != 'image' and key != 'user_id' %}
+                            <td id="questions" align="center">{{ value }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                </tbody>
+                </table>
+                <br>
+                {% include 'question_sessions.html' %}
+                <div class="collapse" id="multiCollapseExamplequestion">
+                    <div class="card card-body">
+                        {% if is_comment %}
+                            <h3>Comments for this question: </h3>
+                            <br>
+                            <table border="2" cellpadding="5" cellspacing="" width="800"
+                                   style="border-collapse:collapse;">
+                            <thead>
+                            <tr>
+                                {% for item in comment_headers %}
+                                    <th>{{ item }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            {% for comment in comments %}
+                                <tbody>
+                                {% if not comment.answer_id %}
+                                    {% if quest_id == comment.question_id %}
+                                        <tr>
+                                            {% for key, value in comment.items() %}
+                                                {% if key == 'submission_time' or key == 'message' %}
+                                                    <td align="center">{{ value }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% include 'question_comment_sessions.html' %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <h3>There are no comments for this question...bruh...</h3>
+                        {% endif %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <br>
+    {% endif %}
+<br>

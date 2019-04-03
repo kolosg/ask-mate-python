@@ -5,7 +5,8 @@ from datetime import datetime
 @database_connection.connection_handler
 def list_all_question(cursor):
     cursor.execute("""
-                    SELECT * FROM Question
+                    SELECT ui.user_name, question.* FROM Question
+                    JOIN user_information ui on question.user_id = ui.id
                     ORDER BY submission_time DESC;
                     """)
     all_question = cursor.fetchall()
@@ -14,7 +15,8 @@ def list_all_question(cursor):
 @database_connection.connection_handler
 def list_answers(cursor):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT ui.user_name, answer.* FROM answer
+                    JOIN user_information ui on answer.user_id = ui.id
                     ORDER BY submission_time DESC; 
     """)
     all_answer = cursor.fetchall()
@@ -150,7 +152,8 @@ def increase_view_number(cursor, quest_id):
 @database_connection.connection_handler
 def list_latest_questions(cursor):
     cursor.execute("""
-                    SELECT * FROM Question
+                    SELECT ui.user_name, question.* FROM Question
+                    JOIN user_information ui on question.user_id = ui.id
                     ORDER BY submission_time DESC
                     LIMIT 5
                     """)
@@ -170,7 +173,7 @@ def post_comment_to_question(cursor, quest_id, message, userid):
 @database_connection.connection_handler
 def select_comments(cursor):
     cursor.execute("""
-                    SELECT submission_time, message, question_id, id, answer_id FROM comment
+                    SELECT submission_time, message, question_id, id, answer_id, user_id FROM comment
                     ORDER BY submission_time DESC
                     """)
     comments = cursor.fetchall()

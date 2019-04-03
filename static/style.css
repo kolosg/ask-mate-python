@@ -85,3 +85,21 @@ h4 {
 #type {
     text-align: center;
 }
+
+td#invalid-message {
+    text-align: center;
+    font-weight: bold;
+}
+
+td#answers {
+    padding: 5px;
+}
+
+td#questions {
+    padding: 5px;
+    height: 2em;
+}
+
+a:visited {
+    color: blue;
+}

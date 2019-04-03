@@ -1,0 +1,55 @@
+{% if session %}
+    {% if user_id == question.user_id %}
+        <form action="/question/{{ question.id }}/new-answer"><span style="float:left;">
+        <button type="submit"
+                style="margin: 10px; width:130px; height:25px"><strong>Add new answer</strong></button></span>
+        </form>
+        <form action="/question/{{ question.id }}/new-comment"><span style="float:left;">
+        <button type="submit"
+                style="margin:10px; width:190px; height:25px"><strong>Post Comment to Question</strong></button></span>
+        </form>
+        <form action="/question/{{ question.id }}/edit"><span style="float:left;">
+        <button type="submit"
+                style="margin:10px; width:130px; height:25px"><strong>Edit Question</strong></button></span>
+        </form>
+        <form action="/question/{{ question.id }}/delete" method="post"><span style="float:left;">
+        <button type="submit"
+                style="margin:10px; width:130px; height:25px"><strong>Delete Question</strong></button></span>
+        </form>
+        <div class="bootstrap-iso">
+        <button type="button" data-toggle="collapse"
+                data-target="#multiCollapseExamplequestion"
+                aria-expanded="false" aria-controls="multiCollapseExamplequestion"
+                style="margin:10px; width:130px; height:25px"><strong>
+            See Comments
+        </strong></button>
+    {% endif %}
+{% endif %}
+{% if session %}
+    {% if user_id != question.user_id %}
+        <form action="/question/{{ question.id }}/new-answer"><span style="float:left;">
+        <button type="submit"
+                style="margin: 10px; width:130px; height:25px"><strong>Add new answer</strong></button></span>
+        </form>
+        <form action="/question/{{ question.id }}/new-comment"><span style="float:left;">
+        <button type="submit"
+                style="margin:10px; width:190px; height:25px"><strong>Post Comment to Question</strong></button></span>
+        </form>
+        <div class="bootstrap-iso">
+        <button type="button" data-toggle="collapse"
+                data-target="#multiCollapseExamplequestion"
+                aria-expanded="false" aria-controls="multiCollapseExamplequestion"
+                style="margin:10px; width:130px; height:25px"><strong>
+            See Comments
+        </strong></button>
+    {% endif %}
+{% endif %}
+{% if not session %}
+    <div class="bootstrap-iso">
+    <button type="button" data-toggle="collapse"
+            data-target="#multiCollapseExamplequestion"
+            aria-expanded="false" aria-controls="multiCollapseExamplequestion"
+            style="margin:10px; width:130px; height:25px"><strong>
+        See Comments
+    </strong></button>
+{% endif %}
