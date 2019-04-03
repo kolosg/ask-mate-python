@@ -302,3 +302,78 @@ def list_users(cursor):
                 """)
 
     return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_information(cursor, username):
+    cursor.execute("""
+                    SELECT * FROM user_information
+                    WHERE user_name = %(username)s
+                    """, dict(username=username))
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def select_user_questions(cursor, username):
+    cursor.execute("""
+                    select question.id, submission_time, view_number, vote_number, title, message from question
+                    join user_information ui on question.user_id = ui.id
+                    where user_name = %(username)s
+                    order by submission_time desc 
+                    """, dict(username=username))
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def select_user_answers(cursor, username):
+    cursor.execute("""
+                    SELECT a.question_id, a.submission_time, a.vote_number, a.message from user_information
+                    join answer a on a.user_id = user_information.id
+                    join question q on a.question_id = q.id
+                    where user_information.user_name = %(username)s
+                    """, dict(username=username))
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def select_question_ids_from_user_answers(cursor, username):
+    cursor.execute("""
+                    SELECT a.question_id from user_information
+                    join answer a on a.user_id = user_information.id
+                    join question q on a.question_id = q.id
+                    where user_information.user_name = %(username)s
+                    """, dict(username=username))
+    return cursor.fetchall()
+
+@database_connection.connection_handler
+def get_corresponding_questions(cursor, user_answer_qid):
+    cursor.execute("""
+                    SELECT question.id, question.submission_time, question.view_number, question.vote_number, question.title, question.message FROM question
+                    JOIN answer a on question.id = a.question_id
+                    WHERE a.question_id =  %(user_answer_qid)s
+                    """, dict(user_answer_qid=user_answer_qid))
+    return cursor.fetchall()
+
+
+def question_ids_from_user_answers(answer_question_ids):
+    question_ids = []
+    for id in answer_question_ids:
+        question_ids.append(id['question_id'])
+    return question_ids
+
+
+def questions_linked_to_answers(question_ids):
+    the_questions = []
+    for id in question_ids:
+        the_questions.extend(get_corresponding_questions(id))
+    return the_questions
+
+
+@database_connection.connection_handler
+def select_user_comments(cursor, username):
+    cursor.execute("""
+                    SELECT comment.submission_time, comment.message, comment.question_id, comment.answer_id FROM comment
+                    JOIN user_information ui on comment.user_id = ui.id
+                    WHERE user_name = %(username)s
+                    """, dict(username=username))
+    return cursor.fetchall()
