@@ -29,6 +29,7 @@
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
+    <th>User</th>
         {% for item in question_headers %}
             <th>{{ item }}</th>
         {% endfor %}
@@ -57,9 +58,11 @@
 <form action="/list"> <span style="float:left;">
     <button type="submit" style="margin:10px; width:150px; height:25px"><strong>See all the questions</strong></button></span>
 </form>
+{%  if session %}
 <form action="/add-question"> <span style="float:left;">
     <button type="submit" style="margin:10px; width:130px; height:25px"><strong>Ask a Question</strong></button></span>
 </form>
+{% endif %}
 </body>
 </html>
 

@@ -1,0 +1,44 @@
+{% if session %}
+    {% if comment.user_id == user_id %}
+        <td>
+            <form action='/comments/{{ comment.id }}/edit'
+                  align="center"
+                  method="get">
+                <button type="submit"
+                        style="width:80px; height:25px">
+                    <strong>Edit</strong>
+                </button>
+            </form>
+        </td>
+        <td>
+            <form action="/comments/{{ comment.id }}/delete"
+                  align="center" method="post">
+                <input type="hidden"
+                       value="{{ answer.question_id }}"
+                       name="question_id">
+                <button type="submit"
+                        style="width:80px; height:25px">
+                    <strong>Delete</strong>
+                </button>
+            </form>
+        </td>
+        </tr>
+    {% elif comment.user_id != user_id %}
+        <td id="invalid-message">
+            Can't edit.
+        </td>
+        <td id="invalid-message">
+            Can't delete.
+        </td>
+        </tr>
+    {% endif %}
+{% endif %}
+{% if not session %}
+    <td id="invalid-message">
+        Can't edit.
+    </td>
+    <td id="invalid-message">
+        Can't delete.
+    </td>
+    </tr>
+{% endif %}

@@ -1,0 +1,76 @@
+{% if is_answer %}
+    <h1>Answers:</h1>
+    <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+        <thead>
+        <tr>
+        <th>User</th>
+            {% for item in answer_headers %}
+                <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% if all_answer %}
+                {% for answer in all_answer %}
+                    {% if quest_id == answer.question_id %}
+                        <tr>
+                            {% for key, value in answer.items() %}
+                                {% if key != 'id' and key != 'image' and key != 'question_id' and key != 'bool' and key != 'user_id'
+                                        and key != 'accepted' %}
+                                    <td id="answers" align="center">{{ value }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% include 'answer_session.html' %}
+                        <tr>
+                            <td colspan="8" align="center">
+                                <div class="bootstrap-iso">
+                                    <div class="collapse" id="multiCollapseExample{{ answer.id }}">
+                                        <div class="card card-body">
+                                            {% if answer.bool == True %}
+                                                <h5><strong>Comments for this answer: </strong></h5>
+                                                <br>
+                                                <table border="2" cellpadding="5" cellspacing="" width="800"
+                                                       style="border-collapse:collapse;">
+                                                    <thead>
+                                                    <tr>
+                                                    <th>User</th>
+                                                        {% for item in comment_headers %}
+                                                            <th>{{ item }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for comment in comments %}
+                                                        {% if answer.id == comment.answer_id %}
+                                                            <tr>
+                                                                {% for key, value in comment.items() %}
+                                                                    {% if key == "user_name" or key == 'submission_time' or key == 'message' %}
+                                                                        <td align="center">{{ value }}</td>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                {% include 'answer_comment_session.html' %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                <br>
+                                                <h3>There are no comments for this answer...bruh...</h3>
+                                                <br>
+                                            {% endif %}
+                                            <br><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+{% else %}
+    <h1>Answers: </h1>
+    <h2>There are no answers to this question yet.</h2>
+{% endif %}
