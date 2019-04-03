@@ -295,14 +295,15 @@ def check_username_already_exist(cursor, username):
 
 
 @database_connection.connection_handler
-def get_pending_answer(cursor, username):
+def get_pending_answer(cursor):
     cursor.execute("""
                     SELECT answer.id, answer.submission_time, answer.vote_number,
                     answer.question_id, answer.message, answer.image,
-                    answer.user_id, answer.accepted
+                    answer.user_id, answer.accepted, question.user_id as question_user_id
                     FROM answer JOIN user_information ON user_information.id = answer.user_id
-                    WHERE user_name = %(username)s and accepted = FALSE
-                    """, dict(username=username))
+                    JOIN question ON answer.question_id = question.id
+                    WHERE question_id = question.id and accepted = FALSE
+                    """)
 
     return cursor.fetchall()
 
