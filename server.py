@@ -25,30 +25,24 @@ def index_route():
     return render_template('main.html')
 
 
-@app.route('/unaccepted-answers')
-def unaccepted_answers():
-    all_question = data_manager.list_all_question()
-    pending_answers = data_manager.get_pending_answer()
-    return render_template('accept_answer.html', pending_answers=pending_answers, all_question=all_question)
-
-
 @app.route('/accept-pending-answer', methods=["POST"])
 def accept_pending_answer():
+    user_id = data_manager.get_user_id_from_session(session["username"])["id"]
     data_manager.accept_pending_answer(request.form["questionid"], request.form["answerid"])
     pending_answers = data_manager.get_pending_answer()
     if pending_answers:
-        return render_template('accept_answer.html', pending_answers=pending_answers)
-    return redirect('latest-questions')
+        return redirect('/user/' + str(user_id))
+    return redirect('/user/' + str(user_id))
 
 
 @app.route('/delete-pending-answer', methods=["POST"])
 def delete_pending_answer():
+    user_id = data_manager.get_user_id_from_session(session["username"])["id"]
     data_manager.deleting_pending_answer(request.form["questionid"], request.form["answerid"])
     pending_answers = data_manager.get_pending_answer()
-    if len(pending_answers) > 0:
-        pending_answers = data_manager.get_pending_answer()
-        return render_template('accept_answer.html', pending_answers=pending_answers)
-    return redirect('latest-questions')
+    if pending_answers:
+        return redirect('/user/' + str(user_id))
+    return redirect('/user/' + str(user_id))
 
 
 @app.route('/users')
@@ -129,6 +123,7 @@ def route_question(quest_id=None):
 
 @app.route('/user/<user_id>')
 def route_user_page(user_id=None):
+    pending_answers = data_manager.get_pending_answer()
     ids = data_manager.question_ids_from_user_answers(data_manager.select_question_ids_from_user_answers(session["username"]))
     needed_questions = data_manager.questions_linked_to_answers(ids)
     table_headers = define_table_headers()
@@ -139,7 +134,8 @@ def route_user_page(user_id=None):
     user_comments = data_manager.select_user_comments(session["username"])
     return render_template('user.html', user_id=user_id, user_info=user_info, user_questions=user_questions,
                            question_headers=table_headers[0], user_answers=user_answers, ids=ids, needed_questions=needed_questions,
-                           answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments)
+                           answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments,
+                           pending_answers=pending_answers)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])

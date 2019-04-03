@@ -10,14 +10,15 @@
     <form action="/logout">
         <button type="submit">Logout</button>
     </form>
+    {% if pending_answers %}
+        <form action="/user/{{ user_id }}">
+            <button type="submit">You have unaccepted answers</button>
+        </form>
+    {% endif %}
 {% else %}
     You are not logged in
 {% endif %}
-{% if pending_answers %}
-    <form action="/unaccepted-answers">
-        <button type="submit">You have unaccepted answers</button>
-    </form>
-{% endif %}
+
 
 <h1>Latest questions:</h1>
 <form action="{{ url_for('search') }}">

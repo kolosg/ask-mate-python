@@ -60,20 +60,60 @@
                                           style="margin:10px; width:130px; height:25px"><strong>
             Your Comments
         </strong></button></span>
-            <br><br><br><br><br>
-            <div class="collapse" id="multiCollapseExamplequestion">
-                <div class="card card-body">
-                    <table id="bla" border="2" cellpadding="5" cellspacing="" width="800"
-                           style="border-collapse:collapse;">
-                        <thead>
-                        <tr>
-                            {% for item in question_headers %}
-                                <th>{{ item }}</th>
+            <div class="bootstrap-iso">
+        <span style="float: left"><button type="button" data-toggle="collapse"
+                                          data-target="#multiCollapseExampleUnacceptedAnswer"
+                                          aria-expanded="false" aria-controls="multiCollapseExampleUnacceptedAnswer"
+                                          style="margin:10px; width:155px; height:25px"><strong>
+            Unaccepted Answers
+        </strong></button></span>
+                <br><br><br><br><br>
+                <div class="collapse" id="multiCollapseExamplequestion">
+                    <div class="card card-body">
+                        <table id="bla" border="2" cellpadding="5" cellspacing="" width="800"
+                               style="border-collapse:collapse;">
+                            <thead>
+                            <tr>
+                                {% for item in question_headers %}
+                                    <th>{{ item }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for question in user_questions %}
+                                <tr>
+                                    {% for key, value in question.items() %}
+                                        {% if key != 'id' %}
+                                            {% if key == 'title' %}
+                                                <td align="center"><a
+                                                        href="/question/{{ question['id'] }}">{{ value }}</a>
+                                                </td>
+                                            {% else %}
+                                                <td align="center">{{ value }}</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                </tbody>
                             {% endfor %}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for question in user_questions %}
+                        </table>
+                        <br><br><br>
+                    </div>
+                </div>
+                <div class="collapse" id="multiCollapseExampleanswer">
+                    <div class="card card-body">
+                        {% for question in needed_questions %}
+                            <table border="2" cellpadding="5" cellspacing="" width="800"
+                                   style="border-collapse:collapse;">
+                            <thead>
+                            <br>
+                            <tr>
+                                {% for item in question_headers %}
+                                    <th>{{ item }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
                             <tr>
                                 {% for key, value in question.items() %}
                                     {% if key != 'id' %}
@@ -86,15 +126,73 @@
                                     {% endif %}
                                 {% endfor %}
                             </tr>
+                            <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
+                                   style="border-collapse:collapse;">
+                                <thead>
+                                <br>
+                                <h4>Your answer to this question:</h4>
+                                <tr>
+                                    {% for item in answer_headers %}
+                                        <th>{{ item }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for answer in user_answers %}
+                                    <tr>
+                                        {% for key, value in answer.items() %}
+                                            {% if key != 'question_id' %}
+                                                {% if answer.question_id == question.id %}
+                                                    <td id="answer-table" align="center">{{ value }}</td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    </tbody>
+                                {% endfor %}
+                            </table>
+                            </tbody>
+                            <br>
+                        {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="multiCollapseExamplecomment">
+                <div class="card card-body">
+                    <table border="2" cellpadding="5" cellspacing="" width="700" style="border-collapse:collapse;">
+                        <thead>
+                        <tr>
+                            {% for item in comment_headers %}
+                                <th>{{ item }}</th>
+                            {% endfor %}
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for comment in user_comments %}
+                            <tr>
+                                {% for key, value in comment.items() %}
+                                    {% if key != 'question_id' and key != 'answer_id' %}
+                                        {% if key == 'message' %}
+                                            <td align="center"><a
+                                                    href="/question/{{ comment['question_id'] }}">{{ value }}</a></td>
+                                        {% else %}
+                                            <td align="center">{{ value }}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                <td id="type">{{ "Question" if comment.answer_id == None else "Answer" }}</td>
+                            </tr>
                             </tbody>
                         {% endfor %}
                     </table>
                     <br><br><br>
                 </div>
             </div>
-            <div class="collapse" id="multiCollapseExampleanswer">
+            <div class="collapse" id="multiCollapseExampleUnacceptedAnswer">
                 <div class="card card-body">
-                    {% for question in needed_questions %}
+                    {% for question in user_questions %}
                         <table border="2" cellpadding="5" cellspacing="" width="800"
                                style="border-collapse:collapse;">
                         <thead>
@@ -121,23 +219,41 @@
                                style="border-collapse:collapse;">
                             <thead>
                             <br>
-                            <h4>Your answer to this question:</h4>
+                            <h4>Unaccepted answer to this question:</h4>
                             <tr>
                                 {% for item in answer_headers %}
                                     <th>{{ item }}</th>
                                 {% endfor %}
+                                <th>Accept</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for answer in user_answers %}
+                            {% for answer in pending_answers %}
                                 <tr>
                                     {% for key, value in answer.items() %}
-                                        {% if key != 'question_id' %}
+                                        {% if key != 'question_id' and key != 'id' and key != 'image'
+                                                and key != 'accepted' and key != 'user_id'
+                                                and key != 'question_user_id' %}
                                             {% if answer.question_id == question.id %}
                                                 <td id="answer-table" align="center">{{ value }}</td>
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
+                                    <td>
+                                        <form action="/accept-pending-answer" method="post">
+                                            <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+                                            <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+                                            <button type="submit">Accept Answer</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="/delete-pending-answer" method="post">
+                                            <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+                                            <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+                                            <button type="submit">Delete Answer</button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 </tbody>
                             {% endfor %}
@@ -147,38 +263,6 @@
                     {% endfor %}
                     </table>
                 </div>
-            </div>
-        </div>
-        <div class="collapse" id="multiCollapseExamplecomment">
-            <div class="card card-body">
-                <table border="2" cellpadding="5" cellspacing="" width="700" style="border-collapse:collapse;">
-                    <thead>
-                    <tr>
-                        {% for item in comment_headers %}
-                            <th>{{ item }}</th>
-                        {% endfor %}
-                        <th>Type</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for comment in user_comments %}
-                        <tr>
-                            {% for key, value in comment.items() %}
-                                {% if key != 'question_id' and key != 'answer_id' %}
-                                    {% if key == 'message' %}
-                                        <td align="center"><a
-                                                href="/question/{{ comment['question_id'] }}">{{ value }}</a></td>
-                                    {% else %}
-                                        <td align="center">{{ value }}</td>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            <td id="type">{{ "Question" if comment.answer_id == None else "Answer" }}</td>
-                        </tr>
-                        </tbody>
-                    {% endfor %}
-                </table>
-                <br><br><br>
             </div>
         </div>
         <br><br><br>
