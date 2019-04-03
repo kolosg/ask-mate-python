@@ -3,8 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <title>User page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-iso.css') }}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-    what's up {{ session["username"] }}
+<h1>Hi {{ session["username"] }}</h1>
+<span style="float: left"><img src="/static/panda.jpg" border="2" alt="panda"></span>
+<div id="user_info">
+    <table border="2" cellpadding="5" cellspacing="" width="200" style="border-collapse:collapse;">
+        <tr>
+            <th>First name</th>
+            <td>{{ user_info[0]['first_name'] }}</td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td>{{ user_info[0]['last_name'] }}</td>
+        </tr>
+        <tr>
+            <th>User name</th>
+            <td>{{ user_info[0]['user_name'] }}</td>
+        </tr>
+        <tr>
+            <th>Reg date</th>
+            <td>{{ user_info[0]['reg_date'] }}</td>
+        </tr>
+    </table>
+</div>
+<br><br>
+<div class="bootstrap-iso">
+    <span style="float: left"><button type="button" data-toggle="collapse"
+                                      data-target="#multiCollapseExamplequestion"
+                                      aria-expanded="false" aria-controls="multiCollapseExamplequestion"
+                                      style="margin:10px; width:130px; height:25px"><strong>
+        Your Questions
+    </strong></button></span>
+    <div class="bootstrap-iso">
+        <span style="float: left"><button type="button" data-toggle="collapse"
+                                          data-target="#multiCollapseExampleanswer"
+                                          aria-expanded="false" aria-controls="multiCollapseExampleanswer"
+                                          style="margin:10px; width:130px; height:25px"><strong>
+            Your Answers
+        </strong></button></span>
+        <div class="bootstrap-iso">
+        <span style="float: left"><button type="button" data-toggle="collapse"
+                                          data-target="#multiCollapseExamplecomment"
+                                          aria-expanded="false" aria-controls="multiCollapseExamplecomment"
+                                          style="margin:10px; width:130px; height:25px"><strong>
+            Your Comments
+        </strong></button></span>
+            <br><br><br><br><br>
+            <div class="collapse" id="multiCollapseExamplequestion">
+                <div class="card card-body">
+                    <table id="bla" border="2" cellpadding="5" cellspacing="" width="800"
+                           style="border-collapse:collapse;">
+                        <thead>
+                        <tr>
+                            {% for item in question_headers %}
+                                <th>{{ item }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for question in user_questions %}
+                            <tr>
+                                {% for key, value in question.items() %}
+                                    {% if key != 'id' %}
+                                        {% if key == 'title' %}
+                                            <td align="center"><a href="/question/{{ question['id'] }}">{{ value }}</a>
+                                            </td>
+                                        {% else %}
+                                            <td align="center">{{ value }}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                    <br><br><br>
+                </div>
+            </div>
+            <div class="collapse" id="multiCollapseExampleanswer">
+                <div class="card card-body">
+                    {% for question in needed_questions %}
+                        <table border="2" cellpadding="5" cellspacing="" width="800"
+                               style="border-collapse:collapse;">
+                        <thead>
+                        <br>
+                        <tr>
+                            {% for item in question_headers %}
+                                <th>{{ item }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% for key, value in question.items() %}
+                                {% if key != 'id' %}
+                                    {% if key == 'title' %}
+                                        <td align="center"><a href="/question/{{ question['id'] }}">{{ value }}</a></td>
+                                    {% else %}
+                                        <td align="center">{{ value }}</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
+                               style="border-collapse:collapse;">
+                            <thead>
+                            <br>
+                            <h4>Your answer to this question:</h4>
+                            <tr>
+                                {% for item in answer_headers %}
+                                    <th>{{ item }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for answer in user_answers %}
+                                <tr>
+                                    {% for key, value in answer.items() %}
+                                        {% if key != 'question_id' %}
+                                            {% if answer.question_id == question.id %}
+                                                <td id="answer-table" align="center">{{ value }}</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                        </tbody>
+                        <br>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="collapse" id="multiCollapseExamplecomment">
+            <div class="card card-body">
+                <table border="2" cellpadding="5" cellspacing="" width="700" style="border-collapse:collapse;">
+                    <thead>
+                    <tr>
+                        {% for item in comment_headers %}
+                            <th>{{ item }}</th>
+                        {% endfor %}
+                        <th>Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for comment in user_comments %}
+                        <tr>
+                            {% for key, value in comment.items() %}
+                                {% if key != 'question_id' and key != 'answer_id' %}
+                                    {% if key == 'message' %}
+                                        <td align="center"><a
+                                                href="/question/{{ comment['question_id'] }}">{{ value }}</a></td>
+                                    {% else %}
+                                        <td align="center">{{ value }}</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <td id="type">{{ "Question" if comment.answer_id == None else "Answer" }}</td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+                <br><br><br>
+            </div>
+        </div>
+        <br><br><br>
 </body>
 </html>

@@ -92,16 +92,26 @@ def route_question(quest_id=None):
 
 
 @app.route('/user/<user_id>')
-def route_user_page(user_id):
+def route_user_page(user_id=None):
+    ids = data_manager.question_ids_from_user_answers(data_manager.select_question_ids_from_user_answers(session["username"]))
+    needed_questions = data_manager.questions_linked_to_answers(ids)
+    table_headers = define_table_headers()
     user_id = data_manager.get_user_id_from_session(session["username"])["id"]
-    return render_template('user.html', user_id=user_id)
+    user_info = data_manager.get_user_information(session["username"])
+    user_questions = data_manager.select_user_questions(session["username"])
+    user_answers = data_manager.select_user_answers(session["username"])
+    user_comments = data_manager.select_user_comments(session["username"])
+    return render_template('user.html', user_id=user_id, user_info=user_info, user_questions=user_questions,
+                           question_headers=table_headers[0], user_answers=user_answers, ids=ids, needed_questions=needed_questions,
+                           answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def route_ask_question(quest_id=None):
     if request.method == 'POST':
-        user_id = data_manager.get_user_id_from_session(session["username"])['id']
-        data_manager.ask_new_question(request.form['title'], request.form['message'], user_id)
+        if session:
+            user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        data_manager.ask_new_question(request.form['title'], request.form['message'], user_id if session else None)
         return redirect('/question/' + str(data_manager.get_latest_id()['id']))
 
 
