@@ -173,7 +173,8 @@ def post_comment_to_question(cursor, quest_id, message, userid):
 @database_connection.connection_handler
 def select_comments(cursor):
     cursor.execute("""
-                    SELECT submission_time, message, question_id, id, answer_id, user_id FROM comment
+                    SELECT ui.user_name, submission_time, message, question_id, comment.id, answer_id, user_id FROM comment
+                    JOIN user_information ui on comment.user_id = ui.id
                     ORDER BY submission_time DESC
                     """)
     comments = cursor.fetchall()

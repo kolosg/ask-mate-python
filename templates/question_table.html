@@ -32,6 +32,7 @@
                                    style="border-collapse:collapse;">
                             <thead>
                             <tr>
+                            <th>User</th>
                                 {% for item in comment_headers %}
                                     <th>{{ item }}</th>
                                 {% endfor %}
@@ -43,7 +44,7 @@
                                     {% if quest_id == comment.question_id %}
                                         <tr>
                                             {% for key, value in comment.items() %}
-                                                {% if key == 'submission_time' or key == 'message' %}
+                                                {% if key == "user_name" or key == 'submission_time' or key == 'message' %}
                                                     <td align="center">{{ value }}</td>
                                                 {% endif %}
                                             {% endfor %}

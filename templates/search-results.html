@@ -21,7 +21,7 @@
         {% for question in highlighted_question %}
             <tr>
                 {% for key, value in question.items() %}
-                    {% if key != 'id' and key != 'image' %}
+                    {% if key != 'id' and key != 'image' and key != "user_id" %}
                         {% if key == 'message' %}
                             <td align="center"><a
                                     href="question/{{ question.id }}">{{ value|safe }}</a></td>
