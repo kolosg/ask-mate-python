@@ -199,6 +199,11 @@ def add_comment_to_answer(answer_id=None):
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
 def route_edit_answer(answer_id=None):
     if request.method == 'GET':
+        if not session:
+            return redirect(url_for('route_latest_questions'))
+        elif session:
+            if data_manager.get_user_id_from_session(session["username"])["id"] != data_manager.get_user_id_from_answers(answer_id)["user_id"]:
+                return redirect(url_for('route_latest_questions'))
         answer_update = True
         answers = data_manager.list_answers()
     else:

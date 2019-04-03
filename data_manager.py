@@ -381,3 +381,12 @@ def select_user_comments(cursor, username):
                     WHERE user_name = %(username)s
                     """, dict(username=username))
     return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_id_from_answers(cursor, answerid):
+    cursor.execute("""
+                    SELECT user_id FROM answer
+                    WHERE id = %(answerid)s
+                    """, dict(answerid=answerid))
+    return cursor.fetchone()
