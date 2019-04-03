@@ -15,14 +15,34 @@ def index_route():
             is_match = password_handler.verify_password(request.form["password"], hashpw)
             if is_match:
                 session["username"] = request.form["username"]
-
                 return redirect('latest-questions')
+
             no_match = True
             return render_template('main.html', no_match=no_match)
         except TypeError:
             no_match = True
             return render_template('main.html', no_match=no_match)
     return render_template('main.html')
+
+
+@app.route('/accept-pending-answer', methods=["POST"])
+def accept_pending_answer():
+    user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+    data_manager.accept_pending_answer(request.form["questionid"], request.form["answerid"])
+    pending_answers = data_manager.get_pending_answer()
+    if pending_answers:
+        return redirect('/user/' + str(user_id))
+    return redirect('/user/' + str(user_id))
+
+
+@app.route('/delete-pending-answer', methods=["POST"])
+def delete_pending_answer():
+    user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+    data_manager.deleting_pending_answer(request.form["questionid"], request.form["answerid"])
+    pending_answers = data_manager.get_pending_answer()
+    if pending_answers:
+        return redirect('/user/' + str(user_id))
+    return redirect('/user/' + str(user_id))
 
 
 @app.route('/users')
@@ -59,10 +79,20 @@ def route_register():
 def route_latest_questions():
     if session:
         user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+        pending_answers = data_manager.get_pending_answer()
+        if len(pending_answers) > 0:
+            if data_manager.get_pending_answer()[0]["question_user_id"] == user_id:
+                pending_answers = data_manager.get_pending_answer()
+                latest_questions = data_manager.list_latest_questions()
+                table_headers = define_table_headers()
+                return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0],
+                                       user_id=user_id if session else "", pending_answers=pending_answers)
+
     latest_questions = data_manager.list_latest_questions()
     table_headers = define_table_headers()
     return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0],
                            user_id=user_id if session else "")
+
 
 
 @app.route('/list')
@@ -93,6 +123,7 @@ def route_question(quest_id=None):
 
 @app.route('/user/<user_id>')
 def route_user_page(user_id=None):
+    pending_answers = data_manager.get_pending_answer()
     ids = data_manager.question_ids_from_user_answers(data_manager.select_question_ids_from_user_answers(session["username"]))
     needed_questions = data_manager.questions_linked_to_answers(ids)
     table_headers = define_table_headers()
@@ -103,7 +134,8 @@ def route_user_page(user_id=None):
     user_comments = data_manager.select_user_comments(session["username"])
     return render_template('user.html', user_id=user_id, user_info=user_info, user_questions=user_questions,
                            question_headers=table_headers[0], user_answers=user_answers, ids=ids, needed_questions=needed_questions,
-                           answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments)
+                           answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments,
+                           pending_answers=pending_answers)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -224,8 +256,9 @@ def search():
 
     table_headers = define_table_headers()
     return render_template('search-results.html', question_results=question_results, answer_results=answer_results,
-                           question_headers=table_headers[0], answer_headers=table_headers[1][:-4], searchstring=searchstring,
+                           question_headers=table_headers[0], akacsanswer_headers=table_headers[1][:-4], searchstring=searchstring,
                            highlighted_question=highlighted_question, highlighted_answer=highlighted_answer)
+
 
 
 if __name__ == "__main__":

@@ -6,17 +6,26 @@
 </head>
 <body>
 {% if session["username"] %}
-Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
+    Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
     <form action="/logout">
         <button type="submit">Logout</button>
     </form>
+    {% if pending_answers %}
+        <form action="/user/{{ user_id }}">
+            <button type="submit">You have unaccepted answers</button>
+        </form>
+    {% endif %}
 {% else %}
-You are not logged in
+    You are not logged in
 {% endif %}
+
+
 <h1>Latest questions:</h1>
 <form action="{{ url_for('search') }}">
     <input type="text" placeholder="Search..." name="q">
-    <button type="submit" style="margin:10px; width:70px; height:25px"><strong>GO!</strong></button></form><br>
+    <button type="submit" style="margin:10px; width:70px; height:25px"><strong>GO!</strong></button>
+</form>
+<br>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>

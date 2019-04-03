@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accept Answers</title>
+</head>
+<body>
+
+{% if pending_answers %}
+    {% for answer in pending_answers %}
+    {% for question in all_question %}
+        {% if question["id"] == answer["question_id"] %}
+            {{ question }}
+        {% endif %}
+    {% endfor %}
+    <h3>Message: {{ answer["message"] }}</h3>
+    <form action="/accept-pending-answer" method="post">
+        <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+        <button type="submit">Accept Answer</button>
+    </form>
+    <form action="/delete-pending-answer" method="post">
+        <input type="hidden" name="questionid" value="{{ answer["question_id"] }}">
+        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
+        <button type="submit">Delete Answer</button>
+    </form>
+{% endfor %}
+{% endif %}
+
+</table>
+</body>
+</html>
