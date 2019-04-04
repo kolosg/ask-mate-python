@@ -299,15 +299,15 @@ def check_username_already_exist(cursor, username):
 
 
 @database_connection.connection_handler
-def get_pending_answer(cursor):
+def get_pending_answer(cursor, userid):
     cursor.execute("""
                     SELECT answer.id, answer.submission_time, answer.vote_number,
                     answer.question_id, answer.message, answer.image,
-                    answer.user_id, answer.accepted, question.user_id as question_user_id
+                    answer.user_id, answer.accepted, question.user_id
                     FROM answer JOIN user_information ON user_information.id = answer.user_id
                     JOIN question ON answer.question_id = question.id
-                    WHERE question_id = question.id and accepted = FALSE
-                    """)
+                    WHERE question.user_id = %(userid)s and accepted = FALSE
+                    """, dict(userid=userid))
 
     return cursor.fetchall()
 
@@ -452,10 +452,11 @@ def get_user_id_from_answers(cursor, answerid):
 
 
 @database_connection.connection_handler
-def count_unaccepted_answers(cursor):
+def count_unaccepted_answers(cursor, user_id):
     cursor.execute("""
                     SELECT COUNT(*) FROM answer
-                    WHERE accepted = FALSE
-                    """)
+                    JOIN question on answer.question_id = question.id
+                    WHERE accepted = FALSE and question.user_id = %(user_id)s
+                    """, dict(user_id=user_id))
 
     return cursor.fetchone()
