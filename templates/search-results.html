@@ -17,10 +17,25 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
 {% include 'header.html' %}
 {% if question_results %}
-    <h1>Question search results:</h1><br>
-    <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <h1 style="color:white;">Question search results:</h1><br>
+    <table class="user-table" border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
         {% for item in question_headers %}
@@ -49,7 +64,7 @@
 </table>
 <br>
 {% if answer_results %}
-    <h1>Answer search results:</h1><br>
+    <h1 style="color:white;">Answer search results:</h1><br>
     <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
@@ -75,7 +90,7 @@
         {% endfor %}
 {% endif %}
 {% if not answer_results and not question_results %}
-    <h1>Oops.. No results..</h1>
+    <h1 style="color:white;">Oops.. No results..</h1>
 {% endif %}
 </tbody>
 </table>

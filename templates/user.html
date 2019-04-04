@@ -16,25 +16,40 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
 {% include 'header.html' %}
-<h1>Hi {{ session["username"] }}</h1>
-<span style="float: left"><img src="/static/panda.jpg" border="2" alt="panda"></span>
+<h1 style="color:white;">Hi {{ session["username"] }}</h1>
+<span style="float: left"><img class="panda" src="/static/panda.jpg" border="2" alt="panda"></span>
 <div id="user_info">
-    <table border="2" cellpadding="5" cellspacing="" width="200" style="border-collapse:collapse;">
+    <table class="user-tables" border="2" cellpadding="5" cellspacing="" width="200" style="border-collapse:collapse;">
         <tr>
-            <th>First name</th>
+            <th style="color:white;">First name</th>
             <td>{{ user_info[0]['first_name'] }}</td>
         </tr>
         <tr>
-            <th>Last Name</th>
+            <th style="color:white;">Last Name</th>
             <td>{{ user_info[0]['last_name'] }}</td>
         </tr>
         <tr>
-            <th>User name</th>
+            <th style="color:white;">User name</th>
             <td>{{ user_info[0]['user_name'] }}</td>
         </tr>
         <tr>
-            <th>Reg date</th>
+            <th style="color:white;">Reg date</th>
             <td>{{ user_info[0]['reg_date'] }}</td>
         </tr>
     </table>
@@ -72,7 +87,7 @@
                 <div class="collapse" id="multiCollapseExamplequestion">
                     <div class="card card-body">
                         {% if user_questions == [] %}
-                            <h3>You haven't asked any questions.</h3>
+                            <h3 style="color:white;">You haven't asked any questions.</h3>
                         {% else %}
                             <table id="bla" border="2" cellpadding="5" cellspacing="" width="800"
                                    style="border-collapse:collapse;">
@@ -108,10 +123,10 @@
                 <div class="collapse" id="multiCollapseExampleanswer">
                     <div class="card card-body">
                         {% if user_answers == [] %}
-                            <h3>You haven't answered any questions.</h3>
+                            <h3 style="color:white;">You haven't answered any questions.</h3>
                         {% else %}
                             {% for question in needed_questions %}
-                                <table border="2" cellpadding="5" cellspacing="" width="800"
+                                <table class="user-table" cellpadding="5" cellspacing="" width="800"
                                        style="border-collapse:collapse;">
                                 <thead>
                                 <br>
@@ -135,11 +150,11 @@
                                         {% endif %}
                                     {% endfor %}
                                 </tr>
-                                <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
+                                <table class="user-table" border="2" cellpadding="5" cellspacing="" width="600"
                                        style="border-collapse:collapse;">
                                     <thead>
                                     <br>
-                                    <h4>Your answer to this question:</h4>
+                                    <h4 style="color:white;">Your answer to this question:</h4>
                                     <tr>
                                         {% for item in answer_headers %}
                                             <th>{{ item }}</th>
@@ -170,9 +185,9 @@
                 <div class="collapse" id="multiCollapseExamplecomment">
                     <div class="card card-body">
                         {% if user_comments == [] %}
-                            <h3>You haven't commented yet.</h3>
+                            <h3 style="color:white;">You haven't commented yet.</h3>
                         {% else %}
-                            <table border="2" cellpadding="5" cellspacing="" width="700"
+                            <table class="user-table" border="2" cellpadding="5" cellspacing="" width="700"
                                    style="border-collapse:collapse;">
                                 <thead>
                                 <tr>
@@ -208,12 +223,12 @@
                 <div class="collapse" id="multiCollapseExampleUnacceptedAnswer">
                     <div class="card card-body">
                         {% if not pending_answers %}
-                            <h3>You have no unaccepted answers.</h3>
+                            <h3 style="color:white;">You have no unaccepted answers.</h3>
                         {% elif pending_answers %}
                             {% for lists in pending_questions %}
                                 {% for question in lists %}
                                     {% if question.user_id == user_id %}
-                                        <table border="2" cellpadding="5" cellspacing="" width="800"
+                                        <table class="user-table" cellpadding="5" cellspacing="" width="800"
                                                style="border-collapse:collapse;">
                                         <thead>
                                         <br>
@@ -237,12 +252,12 @@
                                                 {% endif %}
                                             {% endfor %}
                                         </tr>
-                                        <table id="answer-to-question" border="2" cellpadding="5" cellspacing=""
+                                        <table class="user-table" border="2" cellpadding="5" cellspacing=""
                                                width="600"
                                                style="border-collapse:collapse;">
                                             <thead>
                                             <br>
-                                            <h4>Unnaccepted answer:</h4>
+                                            <h4 style="color:white;">Unnaccepted answer:</h4>
                                             <tr>
                                                 {% for item in answer_headers %}
                                                     <th>{{ item }}</th>

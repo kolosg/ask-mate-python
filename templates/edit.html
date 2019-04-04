@@ -17,8 +17,23 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
 {% include 'header.html' %}
-<h1>Edit your comment:</h1>
+<h1 style="color:white;">Edit your comment:</h1>
 {% for comment in comments %}
     {% if comment.id == comment_id %}
         <form action='/comments/{{ comment_id }}/edit' method="post">

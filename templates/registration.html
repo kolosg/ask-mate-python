@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
 <h1 align="center">PandaProject AskMate</h1>
 {% if existing_username %}
 <script>alert("Username already exist")</script>
@@ -19,8 +34,8 @@
         <p><input type="password" name="password" placeholder="password" required minlength="5"></p>
         <button id="login" type="submit">Register</button>
         </form>
-    <p>Already have an account? <a href="/">Log in!</a></p>
-    <p>See the latest <a href="/latest-questions"> questions.</a></p>
+    <b><p style="color:white;">Already have an account? <a href="/" style="color:red;">Log in!</a></p></b>
+    <b><p style="color:white;">See the latest <a href="/latest-questions" style="color:red;"> questions.</a></p></b>
 </div>
 </body>
 </html>
