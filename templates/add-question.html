@@ -2,11 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ask a Question</title>
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-iso.css') }}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+{% include 'header.html' %}
 {% if update %}
-    <h1>Edit your question:</h1>
+    <h1 style="color:white;">Edit your question:</h1>
     {% for question in questions %}
         {% if question.id == quest_id %}
             <form action='/question/{{ quest_id }}/edit' method="post">
@@ -24,7 +52,7 @@
         {% endif %}
     {% endfor %}
 {% elif answer_update %}
-    <h1>Edit your Answer:</h1>
+    <h1 style="color:white;">Edit your Answer:</h1>
     {% for answer in answers %}
         {% if answer.id == answer_id %}
             <form action='/answer/{{ answer_id }}/edit' method="post">
@@ -40,8 +68,8 @@
         {% endif %}
     {% endfor %}
 {% elif comment %}
-    <h1>The question you're commenting: </h1>
-    <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <h1 style="color:white;">The question you're commenting: </h1>
+    <table class="user-table" border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
         <thead>
         <tr>
         <th>User</th>
@@ -64,7 +92,7 @@
                     </tbody>
                     </table>
                     <br>
-                    <h3>Your comment:</h3>
+                    <h3 style="color:white;">Your comment:</h3>
                     <form action='/question/{{ record['id'] }}/new-comment' method="post">
                         <label for="message-input"></label>
                         <p><textarea id="message-input" name="message" rows="10" cols="100"
@@ -77,8 +105,8 @@
                 {% endif %}
             {% endfor %}
 {% elif comment_answer %}
-    <h1>The answer you're commenting: </h1>
-    <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
+    <h1 style="color:white;">The answer you're commenting: </h1>
+    <table class="user-table" border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
         <thead>
         <tr>
         <th>User</th>
@@ -101,7 +129,7 @@
                     </tbody>
                     </table>
                     <br>
-                    <h3>Your comment:</h3>
+                    <h3 style="color:white;">Your comment:</h3>
                     <form action='/answer/{{ record['id'] }}/new-comment' method="post">
                         <label for="message-input"></label>
                         <p><textarea id="message" name="message" rows="10" cols="100"
@@ -115,7 +143,7 @@
                 {% endif %}
             {% endfor %}
 {% else %}
-    <h1>Your question:</h1>
+    <h1 style="color:white;">Your question:</h1>
     <form action="/add-question" method="post">
         <label for="title-input">Title:</label>
         <p><input type="text" id="title-input" name="title" required minlength="5" size="40"></p>
