@@ -3,29 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>AskMate: PandaProject</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-iso.css') }}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
-{% if session["username"] %}
-    Your a logged in as <a href="/user/{{ user_id }}">{{ session["username"] }}</a>
-    <form action="/logout">
-        <button type="submit">Logout</button>
-    </form>
-    {% if pending_answers %}
-        <form action="/user/{{ user_id }}">
-            <button type="submit">You have unaccepted answers</button>
-        </form>
-    {% endif %}
-{% else %}
-    You are not logged in
-{% endif %}
-
-
-<h1>Latest questions:</h1>
-<form action="{{ url_for('search') }}">
-    <input type="text" placeholder="Search..." name="q">
-    <button type="submit" style="margin:10px; width:70px; height:25px"><strong>GO!</strong></button>
-</form>
-<br>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+<div class="firefly"></div>
+{% include 'header.html' %}
+<h1 style="color:white;">Latest questions:</h1>
 <table border="2" cellpadding="5" cellspacing="" width="1200" style="border-collapse:collapse;">
     <thead>
     <tr>
