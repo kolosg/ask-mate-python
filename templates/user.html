@@ -16,6 +16,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+{% include 'header.html' %}
 <h1>Hi {{ session["username"] }}</h1>
 <span style="float: left"><img src="/static/panda.jpg" border="2" alt="panda"></span>
 <div id="user_info">
@@ -70,17 +71,57 @@
                 <br><br><br><br><br>
                 <div class="collapse" id="multiCollapseExamplequestion">
                     <div class="card card-body">
-                        <table id="bla" border="2" cellpadding="5" cellspacing="" width="800"
-                               style="border-collapse:collapse;">
-                            <thead>
-                            <tr>
-                                {% for item in question_headers %}
-                                    <th>{{ item }}</th>
+                        {% if user_questions == [] %}
+                            <h3>You haven't asked any questions.</h3>
+                        {% else %}
+                            <table id="bla" border="2" cellpadding="5" cellspacing="" width="800"
+                                   style="border-collapse:collapse;">
+                                <thead>
+                                <tr>
+                                    {% for item in question_headers %}
+                                        <th>{{ item }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for question in user_questions %}
+                                    <tr>
+                                        {% for key, value in question.items() %}
+                                            {% if key != 'id' %}
+                                                {% if key == 'title' %}
+                                                    <td align="center"><a
+                                                            href="/question/{{ question['id'] }}">{{ value }}</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td align="center">{{ value }}</td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    </tbody>
                                 {% endfor %}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for question in user_questions %}
+                            </table>
+                        {% endif %}
+                        <br><br><br>
+                    </div>
+                </div>
+                <div class="collapse" id="multiCollapseExampleanswer">
+                    <div class="card card-body">
+                        {% if user_answers == [] %}
+                            <h3>You haven't answered any questions.</h3>
+                        {% else %}
+                            {% for question in needed_questions %}
+                                <table border="2" cellpadding="5" cellspacing="" width="800"
+                                       style="border-collapse:collapse;">
+                                <thead>
+                                <br>
+                                <tr>
+                                    {% for item in question_headers %}
+                                        <th>{{ item }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     {% for key, value in question.items() %}
                                         {% if key != 'id' %}
@@ -94,71 +135,43 @@
                                         {% endif %}
                                     {% endfor %}
                                 </tr>
-                                </tbody>
-                            {% endfor %}
-                        </table>
-                        <br><br><br>
-                    </div>
-                </div>
-                <div class="collapse" id="multiCollapseExampleanswer">
-                    <div class="card card-body">
-                        {% for question in needed_questions %}
-                            <table border="2" cellpadding="5" cellspacing="" width="800"
-                                   style="border-collapse:collapse;">
-                            <thead>
-                            <br>
-                            <tr>
-                                {% for item in question_headers %}
-                                    <th>{{ item }}</th>
-                                {% endfor %}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                {% for key, value in question.items() %}
-                                    {% if key != 'id' %}
-                                        {% if key == 'title' %}
-                                            <td align="center"><a href="/question/{{ question['id'] }}">{{ value }}</a>
-                                            </td>
-                                        {% else %}
-                                            <td align="center">{{ value }}</td>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                            <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
-                                   style="border-collapse:collapse;">
-                                <thead>
-                                <br>
-                                <h4>Your answer to this question:</h4>
-                                <tr>
-                                    {% for item in answer_headers %}
-                                        <th>{{ item }}</th>
-                                    {% endfor %}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for answer in user_answers %}
+                                <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
+                                       style="border-collapse:collapse;">
+                                    <thead>
+                                    <br>
+                                    <h4>Your answer to this question:</h4>
                                     <tr>
-                                        {% for key, value in answer.items() %}
-                                            {% if key != 'question_id' %}
-                                                {% if answer.question_id == question.id %}
-                                                    <td id="answer-table" align="center">{{ value }}</td>
-                                                {% endif %}
-                                            {% endif %}
+                                        {% for item in answer_headers %}
+                                            <th>{{ item }}</th>
                                         {% endfor %}
                                     </tr>
-                                    </tbody>
-                                {% endfor %}
-                            </table>
-                            </tbody>
-                            <br>
-                        {% endfor %}
+                                    </thead>
+                                    <tbody>
+                                    {% for answer in user_answers %}
+                                        <tr>
+                                            {% for key, value in answer.items() %}
+                                                {% if key != 'question_id' %}
+                                                    {% if answer.question_id == question.id %}
+                                                        <td id="answer-table" align="center">{{ value }}</td>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                                </tbody>
+                                <br>
+                            {% endfor %}
                         </table>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="collapse" id="multiCollapseExamplecomment">
                     <div class="card card-body">
+                        {% if user_comments == [] %}
+                        <h3>You haven't commented yet.</h3>
+                        {% else %}
                         <table border="2" cellpadding="5" cellspacing="" width="700" style="border-collapse:collapse;">
                             <thead>
                             <tr>
@@ -187,86 +200,91 @@
                                 </tbody>
                             {% endfor %}
                         </table>
+                    {% endif %}
                         <br><br><br>
                     </div>
                 </div>
                 <div class="collapse" id="multiCollapseExampleUnacceptedAnswer">
                     <div class="card card-body">
-                        {% if pending_answers %}
+                        {% if not pending_answers %}
+                            <h3>You have no unaccepted answers.</h3>
+                        {% elif pending_answers %}
                             {% for lists in pending_questions %}
-                            {% for question in lists %}
-                                <table border="2" cellpadding="5" cellspacing="" width="800"
-                                       style="border-collapse:collapse;">
-                                <thead>
-                                <br>
-                                <tr>
-                                    {% for item in question_headers %}
-                                        <th>{{ item }}</th>
-                                    {% endfor %}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    {% for key, value in question.items() %}
-                                        {% if key != 'id' and key != 'image' and key != 'user_id' %}
-                                            {% if key == 'title' %}
-                                                <td align="center"><a
-                                                        href="/question/{{ question['id'] }}">{{ value }}</a>
-                                                </td>
-                                            {% else %}
-                                                <td align="center">{{ value }}</td>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
-                                <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
-                                       style="border-collapse:collapse;">
+                                {% for question in lists %}
+                                    <table border="2" cellpadding="5" cellspacing="" width="800"
+                                           style="border-collapse:collapse;">
                                     <thead>
                                     <br>
-                                    <h4>Unnaccepted answer:</h4>
                                     <tr>
-                                        {% for item in answer_headers %}
+                                        {% for item in question_headers %}
                                             <th>{{ item }}</th>
                                         {% endfor %}
-                                        <th>Accept</th>
-                                        <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for answer in pending_answers %}
-                                        <tr>
-                                            {% if answer.question_id == question.id %}
-                                                {% for key, value in answer.items() %}
-                                                    {% if key == 'submission_time' or key == 'vote_number' or key == 'message' %}
-                                                        {% if answer.question_id == question.id %}
-                                                            <td id="answer-table" align="center">{{ value }}</td>
-                                                        {% endif %}
-                                                    {% endif %}
-                                                {% endfor %}
-                                                <td>
-                                                    <form action="/accept-pending-answer" method="post">
-                                                        <input type="hidden" name="questionid"
-                                                               value="{{ answer["question_id"] }}">
-                                                        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
-                                                        <button type="submit">Accept Answer</button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form action="/delete-pending-answer" method="post">
-                                                        <input type="hidden" name="questionid"
-                                                               value="{{ answer["question_id"] }}">
-                                                        <input type="hidden" name="answerid" value="{{ answer["id"] }}">
-                                                        <button type="submit">Delete Answer</button>
-                                                    </form>
-                                                </td>
+                                    <tr>
+                                        {% for key, value in question.items() %}
+                                            {% if key != 'id' and key != 'image' and key != 'user_id' %}
+                                                {% if key == 'title' %}
+                                                    <td align="center"><a
+                                                            href="/question/{{ question['id'] }}">{{ value }}</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td align="center">{{ value }}</td>
+                                                {% endif %}
                                             {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    <table id="answer-to-question" border="2" cellpadding="5" cellspacing="" width="600"
+                                           style="border-collapse:collapse;">
+                                        <thead>
+                                        <br>
+                                        <h4>Unnaccepted answer:</h4>
+                                        <tr>
+                                            {% for item in answer_headers %}
+                                                <th>{{ item }}</th>
+                                            {% endfor %}
+                                            <th>Accept</th>
+                                            <th>Delete</th>
                                         </tr>
-                                        </tbody>
-                                    {% endfor %}
-                                </table>
-                                </tbody>
-                                <br>
-                            {% endfor %}
+                                        </thead>
+                                        <tbody>
+                                        {% for answer in pending_answers %}
+                                            <tr>
+                                                {% if answer.question_id == question.id %}
+                                                    {% for key, value in answer.items() %}
+                                                        {% if key == 'submission_time' or key == 'vote_number' or key == 'message' %}
+                                                            {% if answer.question_id == question.id %}
+                                                                <td id="answer-table" align="center">{{ value }}</td>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <td>
+                                                        <form action="/accept-pending-answer" method="post">
+                                                            <input type="hidden" name="questionid"
+                                                                   value="{{ answer["question_id"] }}">
+                                                            <input type="hidden" name="answerid"
+                                                                   value="{{ answer["id"] }}">
+                                                            <button type="submit">Accept Answer</button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form action="/delete-pending-answer" method="post">
+                                                            <input type="hidden" name="questionid"
+                                                                   value="{{ answer["question_id"] }}">
+                                                            <input type="hidden" name="answerid"
+                                                                   value="{{ answer["id"] }}">
+                                                            <button type="submit">Delete Answer</button>
+                                                        </form>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                            </tbody>
+                                        {% endfor %}
+                                    </table>
+                                    </tbody>
+                                    <br>
+                                {% endfor %}
                             {% endfor %}
                         {% endif %}
                         </table>

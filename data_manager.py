@@ -25,7 +25,7 @@ def list_answers(cursor):
 
 def count_answers(quest_id, func):
     table = func
-    return any(record['question_id'] == int(quest_id) for record in table)
+    return any(record['question_id'] == int(quest_id) and record['accepted'] == True for record in table)
 
 
 def count_comments(quest_id):
@@ -448,4 +448,14 @@ def get_user_id_from_answers(cursor, answerid):
                     SELECT user_id FROM answer
                     WHERE id = %(answerid)s
                     """, dict(answerid=answerid))
+    return cursor.fetchone()
+
+
+@database_connection.connection_handler
+def count_unaccepted_answers(cursor):
+    cursor.execute("""
+                    SELECT COUNT(*) FROM answer
+                    WHERE accepted = FALSE
+                    """)
+
     return cursor.fetchone()

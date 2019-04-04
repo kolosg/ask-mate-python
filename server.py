@@ -9,6 +9,10 @@ app.secret_key = "blabla"
 
 @app.route('/', methods=['GET', 'POST'])
 def index_route():
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'POST':
         try:
             hashpw = data_manager.get_hash_pw(request.form["username"])['password']
@@ -22,7 +26,8 @@ def index_route():
         except TypeError:
             no_match = True
             return render_template('main.html', no_match=no_match)
-    return render_template('main.html')
+    return render_template('main.html', user_id=user_id if session else "", notification=notification['count'] if session else "",
+                           pending_answers=pending_answers if session else "")
 
 
 @app.route('/accept-pending-answer', methods=["POST"])
@@ -85,8 +90,9 @@ def route_latest_questions():
                 pending_answers = data_manager.get_pending_answer()
                 latest_questions = data_manager.list_latest_questions()
                 table_headers = define_table_headers()
+                notification = data_manager.count_unaccepted_answers()
                 return render_template('index.html', latest_questions=latest_questions, question_headers=table_headers[0],
-                                       user_id=user_id if session else "", pending_answers=pending_answers)
+                                       user_id=user_id if session else "", pending_answers=pending_answers, notification=notification['count'])
 
     latest_questions = data_manager.list_latest_questions()
     table_headers = define_table_headers()
@@ -97,15 +103,22 @@ def route_latest_questions():
 
 @app.route('/list')
 def route_list():
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     all_question = data_manager.list_all_question()
     table_headers = define_table_headers()
-    return render_template('list.html', all_question=all_question, question_headers=table_headers[0])
+    return render_template('list.html', all_question=all_question, question_headers=table_headers[0], user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/question/<quest_id>')
 def route_question(quest_id=None):
     if session:
         user_id = data_manager.get_user_id_from_session(session["username"])["id"]
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     data_manager.increase_view_number(quest_id)
     all_answer = data_manager.list_answers()
     table_headers = define_table_headers()
@@ -118,11 +131,12 @@ def route_question(quest_id=None):
     return render_template('question.html', questions=questions, quest_id=int(quest_id), question_headers=table_headers[0],
                            all_answer= all_answer, answer_headers=table_headers[1], is_answer=is_answer, comments=comments,
                            comment_headers=table_headers[2], is_comment=is_comment, count_comments=count_comments, is_answer_comment=is_answer_comment,
-                           user_id=user_id if session else "")
+                           user_id=user_id if session else "", pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/user/<user_id>')
 def route_user_page(user_id=None):
+    notification = data_manager.count_unaccepted_answers()
     pending_answers = data_manager.get_pending_answer()
     pending_ids = data_manager.get_pending_answer_ids(pending_answers)
     pending_questions = data_manager.get_pending_question(pending_ids)
@@ -137,30 +151,37 @@ def route_user_page(user_id=None):
     return render_template('user.html', user_id=user_id, user_info=user_info, user_questions=user_questions,
                            question_headers=table_headers[0], user_answers=user_answers, ids=ids, needed_questions=needed_questions,
                            answer_headers=table_headers[1][:-4], comment_headers=table_headers[2][:-2], user_comments=user_comments,
-                           pending_answers=pending_answers, pending_ids=pending_ids, pending_questions=pending_questions)
+                           pending_answers=pending_answers, pending_ids=pending_ids, pending_questions=pending_questions, notification=notification['count'])
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def route_ask_question(quest_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'POST':
-        if session:
-            user_id = data_manager.get_user_id_from_session(session["username"])['id']
         data_manager.ask_new_question(request.form['title'], request.form['message'], user_id if session else None)
         return redirect('/question/' + str(data_manager.get_latest_id()['id']))
 
 
-    return render_template('add-question.html', quest_id=quest_id)
+    return render_template('add-question.html', quest_id=quest_id, pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/question/<quest_id>/edit', methods=['GET', 'POST'])
 def route_edit_question(quest_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'GET':
         update = True
         questions = data_manager.list_all_question()
     else:
         data_manager.update_question(request.form['title'], request.form['message'], int(quest_id))
         return redirect('/question/' + quest_id)
-    return render_template('add-question.html', quest_id=int(quest_id), questions=questions, update=update)
+    return render_template('add-question.html', quest_id=int(quest_id), questions=questions, update=update, user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/question/<quest_id>/delete', methods=['POST'])
@@ -171,6 +192,10 @@ def route_delete_question(quest_id=None):
 
 @app.route('/question/<quest_id>/new-answer', methods=["GET", "POST"])
 def post_answer(quest_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     questions = data_manager.list_all_question()
     table_headers = define_table_headers()
     if request.method == "POST":
@@ -179,7 +204,8 @@ def post_answer(quest_id=None):
 
         return redirect("/question/" + quest_id)
 
-    return render_template("new-answer.html", quest_id=int(quest_id), questions=questions, q_fields=table_headers[0])
+    return render_template("new-answer.html", quest_id=int(quest_id), questions=questions, q_fields=table_headers[0], user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
@@ -191,6 +217,10 @@ def route_delete_answer(answer_id=None):
 
 @app.route("/question/<quest_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_question(quest_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'GET':
         questions = data_manager.list_all_question()
         table_headers = define_table_headers()
@@ -198,18 +228,24 @@ def add_comment_to_question(quest_id=None):
     else:
         data_manager.post_comment_to_question(quest_id, request.form['message'], data_manager.get_user_id_from_session(session["username"])["id"])
         return redirect(url_for('route_question', quest_id=int(quest_id)))
-    return render_template('add-question.html', id=int(quest_id), comment=comment, table=questions, q_fields=table_headers[0])
+    return render_template('add-question.html', id=int(quest_id), comment=comment, table=questions, q_fields=table_headers[0], user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/comments/<comment_id>/edit', methods=['GET', 'POST'])
 def route_edit_comment(comment_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'GET':
         comments = data_manager.select_comments()
     else:
         quest_id = data_manager.get_question_id(int(comment_id))
         data_manager.update_comment(request.form['message'], int(comment_id))
         return redirect(url_for('route_question', quest_id=quest_id["question_id"]))
-    return render_template('edit.html', comment_id=int(comment_id), comments=comments)
+    return render_template('edit.html', comment_id=int(comment_id), comments=comments, user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route("/comments/<comment_id>/delete", methods=["POST"])
@@ -220,6 +256,10 @@ def route_delete_comment(comment_id=None):
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'GET':
         all_answer = data_manager.list_answers()
         table_headers = define_table_headers()
@@ -227,11 +267,16 @@ def add_comment_to_answer(answer_id=None):
     else:
         data_manager.post_comment_to_answer(int(request.form["questionid"]), answer_id, request.form['message'], data_manager.get_user_id_from_session(session["username"])["id"])
         return redirect(url_for('route_question', quest_id=int(request.form["questionid"])))
-    return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3])
+    return render_template('add-question.html', id=int(answer_id), comment_answer=comment_answer, table=all_answer, q_fields=table_headers[1][:-3],user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
 def route_edit_answer(answer_id=None):
+    if session:
+        user_id = data_manager.get_user_id_from_session(session["username"])['id']
+        pending_answers = data_manager.get_pending_answer()
+        notification = data_manager.count_unaccepted_answers()
     if request.method == 'GET':
         if not session:
             return redirect(url_for('route_latest_questions'))
@@ -243,7 +288,8 @@ def route_edit_answer(answer_id=None):
     else:
         data_manager.update_answer(request.form['message'], int(answer_id))
         return redirect(url_for('route_question', quest_id=int(request.form["questionid"])))
-    return render_template('add-question.html', answer_id=int(answer_id), answers=answers, answer_update=answer_update)
+    return render_template('add-question.html', answer_id=int(answer_id), answers=answers, answer_update=answer_update, user_id=user_id if session else "",
+                           pending_answers=pending_answers if session else "", notification=notification['count'] if session else "")
 
 
 @app.route('/search')
